@@ -10,6 +10,6 @@ package Implementacion;
  *
  * @author PC
  */
-public class Vehiculos {
+public class Vehiculo {
     
 }
