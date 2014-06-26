@@ -6,14 +6,14 @@
 
 package Implementacion;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  *
- * @author PC
+ * @author CRISTIAN
  */
-public class Producto {
-    Date fvencimiento;
-    String nombre;
-    int id;
+public class Empresa {
+    LinkedList<Producto> listProdictos;
+    
 }

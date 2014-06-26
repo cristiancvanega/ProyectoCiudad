@@ -4,16 +4,18 @@
  * and open the template in the editor.
  */
 
-package Implementacion;
+package Grafo;
 
-import java.util.Date;
+import Implementacion.Empresa;
 
 /**
  *
- * @author PC
+ * @author CRISTIAN
  */
-public class Producto {
-    Date fvencimiento;
-    String nombre;
-    int id;
+public class Nodo {
+    Arista arista;
+    Empresa empresa;
+    int x;
+    int y;
+    
 }

@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 
-package Implementacion;
-
-import java.util.Date;
+package Grafo;
 
 /**
  *
- * @author PC
+ * @author CRISTIAN
  */
-public class Producto {
-    Date fvencimiento;
-    String nombre;
-    int id;
+public class Grafo {
+    
 }

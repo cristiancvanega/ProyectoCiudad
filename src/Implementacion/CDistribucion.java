@@ -6,14 +6,11 @@
 
 package Implementacion;
 
-import java.util.Date;
-
 /**
  *
- * @author PC
+ * @author CRISTIAN
  */
-public class Producto {
-    Date fvencimiento;
-    String nombre;
+public class CDistribucion {
     int id;
+    int direccion;//Id de nodo donde está ubicado.
 }

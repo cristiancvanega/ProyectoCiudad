@@ -6,14 +6,15 @@
 
 package Implementacion;
 
-import java.util.Date;
-import sun.awt.HKSCS;
-
 /**
  *
- * @author PC
+ * @author CRISTIAN
  */
-public class Vehiculo {
+public class CAbastecimiento {
+    int id;//
     int capacidad;
-    String placa;
+    Producto[] productos;//Un vector de dos posiciones.
+    int direccion;//Es el id del nodo donde está ubicado.
+    int vDisponibles;//Cantidad de vehículos disponibles.
+    
 }
