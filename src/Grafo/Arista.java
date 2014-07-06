@@ -14,8 +14,8 @@ public class Arista {
     private int distancia;
     private int velocidad;
     private int peso;
-    private int[] sentido; //si amnos tienen -1 la dirección es en ambos sentidos
-    private boolean tipo; //si soporta o no tráfico de camión.
+    private int[] sentido; //si amnos tienen -1 la direcciÃ³n es en ambos sentidos
+    private boolean tipo; //si soporta o no trÃ¡fico de camiÃ³n.
 
     public Arista(int distancia, int velocidad, int peso, int[] sentido, boolean tipo) {
         this.distancia = distancia;

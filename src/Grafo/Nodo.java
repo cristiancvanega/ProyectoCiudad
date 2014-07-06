@@ -6,16 +6,17 @@
 
 package Grafo;
 
-import Implementacion.Empresa;
+import java.awt.Rectangle;
 
 /**
  *
  * @author CRISTIAN
  */
 public class Nodo {
-    Arista arista;
-    Empresa empresa;
+    Object huesped;//Tipo de dato que va a alojar: Empresa/C.DistribuciÃ³n/C.Abastecimiento.
     int x;
     int y;
+    int tamano;
+    Rectangle area;//Ã�rea que cubre el nodo
     
 }
