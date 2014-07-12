@@ -13,4 +13,5 @@ package Implementacion;
 public class CDistribucion {
     int id;
     int direccion;//Id de nodo donde está ubicado.
+    String tipo;
 }

@@ -14,6 +14,7 @@ public class CAbastecimiento {
     int id;//
     int capacidad;
     Producto[] productos;//Un vector de dos posiciones.
+    int cantidad;
     int direccion;//Es el id del nodo donde está ubicado.
     int vDisponibles;//Cantidad de vehículos disponibles.
     

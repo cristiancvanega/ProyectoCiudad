@@ -15,5 +15,6 @@ import java.util.Date;
 public class Producto {
     Date fvencimiento;
     String nombre;
+    int cantidad;
     int id;
 }

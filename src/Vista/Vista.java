@@ -1,12 +1,16 @@
 package Vista;
 
-
 public class Vista extends javax.swing.JFrame {
+
+    int cont;
 
     public Vista() {
         initComponents();
+        cont = 64;
+        
         ((Panel) panelFondo).setImagen("../Recursos/MapaCiudad.jpg");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -14,7 +18,7 @@ public class Vista extends javax.swing.JFrame {
         panelFondo = new Panel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Probando JPanel con Imagen de Fondo");
+        setTitle("La Ciudad Del 5");
         setPreferredSize(new java.awt.Dimension(1130, 780));
         setResizable(true);
 
@@ -55,7 +59,6 @@ public class Vista extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
 
             public void run() {
                 Vista v = new Vista();

@@ -6,9 +6,6 @@
 
 package Implementacion;
 
-import java.util.Date;
-import sun.awt.HKSCS;
-
 /**
  *
  * @author PC

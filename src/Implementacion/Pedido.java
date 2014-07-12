@@ -15,6 +15,7 @@ import java.util.LinkedList;
  */
 public class Pedido {
 
+    String id;
     int[][] pedido; //Matriz que contiene produco y cantidad
     Date fSolicitud;
     Date fENvio;
