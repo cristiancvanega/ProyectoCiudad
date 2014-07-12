@@ -26,7 +26,7 @@ public class Panel extends JPanel {
     @Override
     public void paint(Graphics g) {
         if (imagen != null) {
-            g.drawImage(imagen, 165, 0, 915, 715, this);
+            g.drawImage(imagen, 175, 0, 915, 715, this);
 
             setOpaque(false);
         } else {

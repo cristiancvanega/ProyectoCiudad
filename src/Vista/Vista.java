@@ -15,6 +15,7 @@ public class Vista extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Probando JPanel con Imagen de Fondo");
+        setPreferredSize(new java.awt.Dimension(1130, 780));
 
         panelFondo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         panelFondo.setOpaque(false);
@@ -56,9 +57,9 @@ public class Vista extends javax.swing.JFrame {
             
 
             public void run() {
-                Vista jf = new Vista();
-                jf.setLocationRelativeTo(null);
-                jf.setVisible(true);
+                Vista v = new Vista();
+                v.setLocationRelativeTo(null);
+                v.setVisible(true);
             }
         });
     }
