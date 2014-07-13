@@ -18,6 +18,7 @@ public class Vista extends javax.swing.JFrame {
     private void initComponents() {
 
         panelFondo = new Panel();
+        chbxHabDesN = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("La Ciudad Del 5");
@@ -33,15 +34,21 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        chbxHabDesN.setText("Hab/Des Nodos");
+
         javax.swing.GroupLayout panelFondoLayout = new javax.swing.GroupLayout(panelFondo);
         panelFondo.setLayout(panelFondoLayout);
         panelFondoLayout.setHorizontalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 823, Short.MAX_VALUE)
+            .addGroup(panelFondoLayout.createSequentialGroup()
+                .addComponent(chbxHabDesN)
+                .addGap(0, 724, Short.MAX_VALUE))
         );
         panelFondoLayout.setVerticalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 612, Short.MAX_VALUE)
+            .addGroup(panelFondoLayout.createSequentialGroup()
+                .addComponent(chbxHabDesN)
+                .addGap(0, 589, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -83,6 +90,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chbxHabDesN;
     public javax.swing.JPanel panelFondo;
     // End of variables declaration//GEN-END:variables
 
