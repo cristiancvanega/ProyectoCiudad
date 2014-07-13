@@ -69,7 +69,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel panelFondo;
+    public javax.swing.JPanel panelFondo;
     // End of variables declaration//GEN-END:variables
 
 }
