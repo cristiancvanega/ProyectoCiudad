@@ -18,13 +18,15 @@ public class Nodo {
     private int y;
     private int tamano;
     private Rectangle area;//Ã�rea que cubre el nodo
+    private int id;
 
-    public Nodo(int x, int y) {
+    public Nodo(int x, int y, int id) {
         this.huesped = null;
         this.x = x;
         this.y = y;
         this.tamano = 32;
         this.area = new Rectangle(x, y, this.getTamano(), this.getTamano());
+        this.id = id;
     }
 
     /**
@@ -95,6 +97,20 @@ public class Nodo {
      */
     public void setArea(Rectangle area) {
         this.area = area;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     
