@@ -5,8 +5,6 @@
  */
 package Grafo;
 
-import java.util.LinkedList;
-
 /**
  *
  * @author CRISTIAN
@@ -69,15 +67,14 @@ public class Grafo {
         this.ruta = new int[this.tamano][this.tamano];
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
-                if(this.matrizAD != null){
+                if(this.matrizAD[i][j] != null){
                     this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
                 }
             }
         }
     }
 
-
-    public int[][] shortestpath() {
+    public int[][] floydwarshall() {
         int n = matrAdy.length;
         int[][] cMA = new int[n][n];
         copiarMA(cMA, matrAdy);//realizamos una copia de la matriz de adyacencia

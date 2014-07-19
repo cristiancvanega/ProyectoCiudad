@@ -6,6 +6,7 @@
 
 package Grafo;
 
+import Implementacion.CDistribucion;
 import java.awt.Rectangle;
 
 /**
@@ -19,6 +20,7 @@ public class Nodo {
     private int tamano;
     private Rectangle area;//Ã�rea que cubre el nodo
     private int id;
+    private boolean habilidato;//Huésped del nodo habilidato/deshabilitado
 
     public Nodo(int x, int y, int id) {
         this.huesped = null;
@@ -27,6 +29,7 @@ public class Nodo {
         this.tamano = 32;
         this.area = new Rectangle(x, y, this.tamano, this.tamano);
         this.id = id;
+        this.habilidato = false;
     }
 
     /**
@@ -40,6 +43,8 @@ public class Nodo {
      * @param huesped the huesped to set
      */
     public void setHuesped(Object huesped) {
+        if(huesped == null)
+            this.habilidato = false;
         this.huesped = huesped;
     }
 
@@ -113,7 +118,18 @@ public class Nodo {
         this.id = id;
     }
 
-    
+    public void creaCDistr(){
+        this.huesped = new CDistribucion();
+        this.habilidato = true;
+    }
+
+    public boolean isHabilidato() {
+        return habilidato;
+    }
+
+    public void setHabilidato(boolean habilidato) {
+        this.habilidato = habilidato;
+    }
     
     
 }

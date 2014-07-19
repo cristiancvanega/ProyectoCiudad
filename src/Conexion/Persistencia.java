@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,16 +65,33 @@ public class Persistencia {
         }
         return -1;
     }
+    
+    private LinkedList<Integer> getCDistrDefec(){
+        LinkedList<Integer> list = new LinkedList<>();
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT idcentrdistr FROM cdistdefec");
+            while(rs.next()){
+                list.add(rs.getInt("idcentrdistr"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
     public Grafo.Nodo[] getListNodos() {
         Grafo.Nodo[] list = new Grafo.Nodo[108];
         list[0] = new Grafo.Nodo(0, 0, 0);
+        LinkedList<Integer> listCDistrDef = this.getCDistrDefec();
         try {
-//            statement=getConnection().createStatement();
             statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT x, y, id FROM coordnodos");
             while (rs.next()) {
                 list[rs.getInt(3)] = new Grafo.Nodo(rs.getInt(1), rs.getInt(2), rs.getInt(3));
+                if(listCDistrDef.remove((Integer)rs.getInt(3))){
+                    list[rs.getInt(3)].creaCDistr();
+                }
 //                System.out.println(rs.getInt(1) + ", " + rs.getInt(2) + ", " + rs.getInt(3));
             }
         } catch (SQLException ex) {
