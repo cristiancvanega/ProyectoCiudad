@@ -13,17 +13,21 @@ package Grafo;
 public class Arista {
     private int distancia;
     private int velocidad;
-    private int peso;
-    private int[] sentido; //si amnos tienen -1 la direcciÃ³n es en ambos sentidos
+    private int carriles; //Cantidad de carriles que tiene la arista
     private boolean tipo; //si soporta o no trÃ¡fico de camiÃ³n.
+    private int id;
+    private double peso;
 
-    public Arista(int distancia, int velocidad, int peso, int[] sentido, boolean tipo) {
+    public Arista(int distancia, int velocidad, double peso, boolean tipo, int id) {
         this.distancia = distancia;
         this.velocidad = velocidad;
-        this.peso = peso;
-        this.sentido = sentido;
+        this.carriles = 1;
         this.tipo = tipo;
+        this.id = id;
+        this.peso = peso;
     }
+
+    
 
     /**
      * @return the distancia
@@ -54,34 +58,6 @@ public class Arista {
     }
 
     /**
-     * @return the peso
-     */
-    public int getPeso() {
-        return peso;
-    }
-
-    /**
-     * @param peso the peso to set
-     */
-    public void setPeso(int peso) {
-        this.peso = peso;
-    }
-
-    /**
-     * @return the sentido
-     */
-    public int[] getSentido() {
-        return sentido;
-    }
-
-    /**
-     * @param sentido the sentido to set
-     */
-    public void setSentido(int[] sentido) {
-        this.sentido = sentido;
-    }
-
-    /**
      * @return the tipo
      */
     public boolean isTipo() {
@@ -93,6 +69,30 @@ public class Arista {
      */
     public void setTipo(boolean tipo) {
         this.tipo = tipo;
+    }
+
+    public int getCarriles() {
+        return carriles;
+    }
+
+    public void setCarriles(int carriles) {
+        this.carriles = carriles;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
     }
     
     

@@ -25,7 +25,7 @@ public class Nodo {
         this.x = x;
         this.y = y;
         this.tamano = 32;
-        this.area = new Rectangle(x, y, this.getTamano(), this.getTamano());
+        this.area = new Rectangle(x, y, this.tamano, this.tamano);
         this.id = id;
     }
 

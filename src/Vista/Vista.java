@@ -1,16 +1,16 @@
 package Vista;
 
+
 public class Vista extends javax.swing.JFrame {
 
     int cont;
-    Grafo.Nodo[] nodos;
+    Grafo.Grafo grafo;
 
     public Vista() {
         initComponents();
         cont = 64;
-
         ((Panel) panelFondo).setImagen("../Recursos/MapaCiudad.jpg");
-        this.cargaNodos();
+        this.cargar();
     }
 
     @SuppressWarnings("unchecked")
@@ -72,10 +72,11 @@ public class Vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelFondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelFondoMouseClicked
-        for(Grafo.Nodo nodo:this.nodos){
+        for(Grafo.Nodo nodo:this.grafo.getListNodos()){
             if(nodo.getArea().contains(evt.getX(), evt.getY()))
-                System.out.println(nodo.getId());
+                System.out.println("id: " + nodo.getId() + ", x: " + nodo.getX() + ", y: " + nodo.getY());
         }
+        System.out.println(evt.getX() + ", " + evt.getY());
     }//GEN-LAST:event_panelFondoMouseClicked
 
     public static void main(String args[]) {
@@ -94,9 +95,8 @@ public class Vista extends javax.swing.JFrame {
     public javax.swing.JPanel panelFondo;
     // End of variables declaration//GEN-END:variables
 
-    private void cargaNodos() {
-        Conexion.Persistencia con = new Conexion.Persistencia();
-        this.nodos = con.getListNodos();
+    private void cargar() {
+        this.grafo = new Grafo.Grafo(108);
     }
 
 }
