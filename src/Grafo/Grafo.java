@@ -5,6 +5,8 @@
  */
 package Grafo;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author CRISTIAN
@@ -13,9 +15,10 @@ public class Grafo {
 
     private Arista[][] matrizAD;
     private Nodo[] listNodos;
+    Nodo[][] matrizNodos;
     int tamano;
-    int [][] ruta;
-    int [][] matrAdy;
+    int[][] ruta;
+    int[][] matrAdy;
     double[][] mCostos;
 
     public Grafo(int tamano) {
@@ -61,29 +64,52 @@ public class Grafo {
 
     private void cargar() {
         Conexion.Persistencia con = new Conexion.Persistencia();
+        this.matrAdy = new int[this.tamano][this.tamano];
         this.matrizAD = con.getMatrArista(this.tamano);
         this.listNodos = con.getListNodos();
         this.mCostos = new double[this.tamano][this.tamano];
         this.ruta = new int[this.tamano][this.tamano];
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
-                if(this.matrizAD[i][j] != null){
+                if (this.matrizAD[i][j] != null) {
                     this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-                }
+                }else
+                    this.mCostos[i][j] = 1000000;
             }
         }
     }
 
-    public int[][] floydwarshall() {
-        int n = matrAdy.length;
-        int[][] cMA = new int[n][n];
-        copiarMA(cMA, matrAdy);//realizamos una copia de la matriz de adyacencia
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
-                        cMA[i][j] = cMA[i][k] + cMA[k][j];
-                        ruta[i][j] = ruta[k][j];
+    public Nodo[] getNodosRuta(int origen, int destino){
+        
+        return null;
+    }
+    
+    public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta){
+//        if(origen == destino)
+//            return;
+//        ruta.add(this.ruta[origen][destino]);
+//        getIntRuta(this.ruta[origen][destino], destino, ruta);
+        double [][] costos = this.floydwarshall();
+
+        for (int i = 0; i < this.tamano; i++) {
+            for (int j = 0; j < this.tamano; j++) {
+                System.out.print(", "+costos[i][j]);
+            }
+            System.out.println("");
+        }
+    }
+    
+    public double[][] floydwarshall() {
+        int n = this.tamano;
+        double[][] cMA = new double[this.tamano][this.tamano];
+        copiarMA(cMA, mCostos);//realizamos una copia de la matriz de adyacencia
+        for (int k = 0; k < this.tamano; k++) {
+            for (int i = 0; i < this.tamano; i++) {
+                for (int j = 0; j < this.tamano; j++) {
+                    double calc = cMA[i][k] + cMA[k][j];
+                    if (calc < cMA[i][j]) {
+                        cMA[i][j] = calc;
+                        ruta[i][j] = k;
                     }
                 }
             }
@@ -91,14 +117,14 @@ public class Grafo {
         return cMA;
     }
 
-    public void copiarMA(int[][] a, int[][] b) {
+    public void copiarMA(double[][] a, double[][] b) {
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
                 a[i][j] = b[i][j];
             }
         }
     }
-    
+
     private void dijkstra(int vert) {
         boolean[] visto = new boolean[this.tamano];
         int[][] disj = new int[2][this.tamano];
@@ -112,7 +138,7 @@ public class Grafo {
         }
         disj[0][vert] = 0;
         visto[vert] = true;
-        while(!this.visitados(visto)){
+        while (!this.visitados(visto)) {
             vert = this.minimo(visto, disj);
             System.out.println("" + vert);
             visto[vert] = true;
@@ -126,10 +152,10 @@ public class Grafo {
             }
         }
     }
-    
+
     private boolean visitados(boolean[] visto) {
         for (int i = 0; i < visto.length; i++) {
-            if (visto[i]== false) {
+            if (visto[i] == false) {
                 System.out.println("falso visitados");
                 return false;
             }
@@ -148,5 +174,25 @@ public class Grafo {
             }
         }
         return pos;
+    }
+
+    private void llenaMatrizNodos() {
+        this.matrizNodos = new Nodo[10][11];
+        int index = 9;
+        this.matrizNodos[0][1] = this.listNodos[1];
+        this.matrizNodos[0][2] = this.listNodos[2];
+        this.matrizNodos[0][3] = this.listNodos[3];
+        this.matrizNodos[0][4] = this.listNodos[4];
+        this.matrizNodos[0][5] = this.listNodos[5];
+        this.matrizNodos[0][6] = this.listNodos[6];
+        this.matrizNodos[0][7] = this.listNodos[7];
+        this.matrizNodos[0][8] = this.listNodos[8];
+        for (int i = 1; i < 10; i++) {
+            for (int j = 0; j < 11; j++) {
+                this.matrizNodos[i][j] = this.listNodos[index];
+                index++;
+            }
+        }
+        System.out.println("llenaMatrizNodos(): "+index);
     }
 }
