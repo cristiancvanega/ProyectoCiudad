@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Vista;
+
+import Conexion.Persistencia;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,11 +15,51 @@ package Vista;
  */
 public class CAbastecimiento extends javax.swing.JFrame {
 
+    Persistencia persistencia;
+    int aux;
+    int temp;
+
     /**
      * Creates new form CAbastecimiento
      */
     public CAbastecimiento() {
         initComponents();
+        persistencia = new Persistencia();
+        llenarCombobox(persistencia.cargarProductos());
+        aux=0;
+        temp=0;
+    }
+
+    public void llenarCombobox(LinkedList productos) {
+
+        for (int i = 0; i < productos.size(); i++) {
+            jComboBox1.addItem(productos.get(i));
+        }
+
+    }
+
+    public void MAXcantidad(LinkedList max) {
+        aux = jComboBox1.getSelectedIndex();
+        lblmax.setText("MAX " + max.get(aux) + " Cajas");
+    }
+    
+    public void alerta(LinkedList max) {
+        temp = (int) max.get(aux);
+        if (txtcantidad.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta vacio, favor llenar");
+            txtcantidad.setText("");
+        } else if ((Integer.parseInt(txtcantidad.getText()) > temp)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta excedido la cantidad MAX es: " + temp);
+            txtcantidad.setText("");
+        } else if ((Integer.parseInt(txtcantidad.getText()) < 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no permite numero negativos");
+            txtcantidad.setText("");
+        }else if ((Integer.parseInt(txtcantidad.getText()) == 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no puede ser cero");
+            txtcantidad.setText("");
+        }
+        
+
     }
 
     /**
@@ -33,8 +76,8 @@ public class CAbastecimiento extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        txtcantidad = new javax.swing.JTextField();
+        lblmax = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -54,20 +97,30 @@ public class CAbastecimiento extends javax.swing.JFrame {
         jLabel3.setText("Cantidad");
 
         jComboBox1.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jComboBox1ActionPerformed(evt);
             }
         });
 
-        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel4.setText("MAX xxxx Cajas");
+        txtcantidad.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
+        txtcantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcantidadActionPerformed(evt);
+            }
+        });
+
+        lblmax.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblmax.setForeground(new java.awt.Color(255, 0, 0));
+        lblmax.setText("MAX xxxx Cajas");
 
         jButton2.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
         jButton2.setText("Aceptar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -96,8 +149,8 @@ public class CAbastecimiento extends javax.swing.JFrame {
                                 .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)))
+                                    .addComponent(txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblmax)))
                             .addComponent(jScrollPane1))))
                 .addContainerGap(82, Short.MAX_VALUE))
         );
@@ -118,25 +171,32 @@ public class CAbastecimiento extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(lblmax)
                 .addGap(34, 34, 34)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jComboBox1.getAccessibleContext().setAccessibleName("");
-        jTextField1.getAccessibleContext().setAccessibleName("");
+        txtcantidad.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtcantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcantidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtcantidadActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        MAXcantidad(persistencia.cargarCantidad());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        alerta(persistencia.cargarCantidad());    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,9 +240,9 @@ public class CAbastecimiento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblmax;
+    private javax.swing.JTextField txtcantidad;
     // End of variables declaration//GEN-END:variables
 }

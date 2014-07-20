@@ -21,6 +21,9 @@ import java.util.logging.Logger;
  */
 public class Persistencia {
 
+    LinkedList<String> pr = new LinkedList<>();
+    LinkedList<Integer> ca = new LinkedList<>();
+    int aux;
     ResultSet resultset;
     Statement statement;
     private Connection connection;
@@ -34,6 +37,7 @@ public class Persistencia {
         this.statement = null;
         this.connection = null;
         this.conectar();
+        aux = 0;
     }
 
     public int conectar() {
@@ -65,13 +69,13 @@ public class Persistencia {
         }
         return -1;
     }
-    
-    private LinkedList<Integer> getCDistrDefec(){
+
+    private LinkedList<Integer> getCDistrDefec() {
         LinkedList<Integer> list = new LinkedList<>();
         try {
             statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT idcentrdistr FROM cdistdefec");
-            while(rs.next()){
+            while (rs.next()) {
                 list.add(rs.getInt("idcentrdistr"));
             }
         } catch (SQLException ex) {
@@ -89,7 +93,7 @@ public class Persistencia {
             ResultSet rs = statement.executeQuery("SELECT x, y, id FROM coordnodos");
             while (rs.next()) {
                 list[rs.getInt(3)] = new Grafo.Nodo(rs.getInt(1), rs.getInt(2), rs.getInt(3));
-                if(listCDistrDef.remove((Integer)rs.getInt(3))){
+                if (listCDistrDef.remove((Integer) rs.getInt(3))) {
                     list[rs.getInt(3)].creaCDistr();
                 }
 //                System.out.println(rs.getInt(1) + ", " + rs.getInt(2) + ", " + rs.getInt(3));
@@ -172,4 +176,29 @@ public class Persistencia {
         this.connection = connection;
     }
 
+    public LinkedList<String> cargarProductos() {
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM producto");
+            while (rs.next()) {
+                pr.add(rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pr;
+    }
+
+    public LinkedList<Integer> cargarCantidad() {
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM producto");
+            while (rs.next()) {
+                ca.add(rs.getInt(3));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ca;
+    }
 }

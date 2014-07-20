@@ -3,8 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Vista;
+
+import Conexion.Persistencia;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,13 +24,72 @@ package Vista;
  */
 public class Pedidos extends javax.swing.JFrame {
 
+    Persistencia persistencia;
+    int aux;
+    int temp;
+
     /**
      * Creates new form Pedidos
      */
     public Pedidos() {
         initComponents();
+        persistencia = new Persistencia();
+        llenarCombobox(persistencia.cargarProductos());
+        aux = 0;
+        temp = 0;
+
+//        cargarCombo();
     }
 
+    public void llenarCombobox(LinkedList productos) {
+        for (int i = 0; i < productos.size(); i++) {
+            jComboBox1.addItem(productos.get(i));
+        }
+    }
+
+    public void MAXcantidad(LinkedList max) {
+        aux = jComboBox1.getSelectedIndex();
+        lblmax.setText("MAX " + max.get(aux) + " Cajas");
+    }
+
+    public void alerta(LinkedList max) {
+        temp = (int) max.get(aux);
+        if (txtcantidad.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta vacio, favor llenar");
+            txtcantidad.setText("");
+        } else if ((Integer.parseInt(txtcantidad.getText()) > temp)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta excedido la cantidad MAX es: " + temp);
+            txtcantidad.setText("");
+        } else if ((Integer.parseInt(txtcantidad.getText()) < 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no permite numero negativos");
+            txtcantidad.setText("");
+        }else if ((Integer.parseInt(txtcantidad.getText()) == 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no puede ser cero");
+            txtcantidad.setText("");
+        }
+        
+    }
+
+//    public void cargarCombo() {
+//        try {
+//            initComponents();
+//            DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
+//            Class.forName("org.postgresql.Driver");
+//            Connection conexion = DriverManager.getConnection("jdbc:postgresql://desarrollosn.com/desarrq7_ayda", "desarrq7_ayda2", "cerdada");
+//            Statement st = conexion.createStatement();
+//            ResultSet rs = st.executeQuery("SELECT * FROM producto");
+//            while (rs.next()) {
+//                modeloCombo.addElement(rs.getString(2));
+//                System.out.println(""+ modeloCombo);
+//            }
+//            rs.close();
+//            jComboBox1.setModel(modeloCombo);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,9 +108,9 @@ public class Pedidos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
+        txtcantidad = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        lblmax = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +131,11 @@ public class Pedidos extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
         jButton2.setText("Aceptar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -67,14 +143,20 @@ public class Pedidos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jComboBox1.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
+        txtcantidad.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
 
         jTextField2.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
 
-        jLabel5.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel5.setText("MAX xxxx Cajas");
+        lblmax.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblmax.setForeground(new java.awt.Color(255, 0, 0));
+        lblmax.setText("MAX xxxx Cajas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,7 +170,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addGap(152, 152, 152)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
+                        .addGap(125, 125, 125)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,13 +179,13 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)))
+                                    .addComponent(lblmax)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,29 +194,39 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jLabel1))
-                .addGap(70, 70, 70)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addComponent(lblmax)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        MAXcantidad(persistencia.cargarCantidad());
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        alerta(persistencia.cargarCantidad());
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,9 +259,11 @@ public class Pedidos extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Pedidos().setVisible(true);
+
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -179,10 +273,10 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblmax;
+    private javax.swing.JTextField txtcantidad;
     // End of variables declaration//GEN-END:variables
 }
