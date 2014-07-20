@@ -13,4 +13,5 @@ package Implementacion;
 public class Vehiculo {
     int capacidad;
     String placa;
+    String tipo;
 }
