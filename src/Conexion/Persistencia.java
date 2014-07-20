@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -179,7 +180,7 @@ public class Persistencia {
     public LinkedList<String> cargarProductos() {
         try {
             statement = this.connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM producto");
+            ResultSet rs = statement.executeQuery("SELECT id, nombre, cantidad, fvencimiento FROM producto");
             while (rs.next()) {
                 pr.add(rs.getString(2));
             }
@@ -192,7 +193,7 @@ public class Persistencia {
     public LinkedList<Integer> cargarCantidad() {
         try {
             statement = this.connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM producto");
+            ResultSet rs = statement.executeQuery("SELECT id, nombre, cantidad, fvencimiento FROM producto");
             while (rs.next()) {
                 ca.add(rs.getInt(3));
             }
@@ -201,4 +202,24 @@ public class Persistencia {
         }
         return ca;
     }
+
+    public void insertCAbastecimiento(int id, int capacidad, int cantidad, int direccion, int vdisponibles, String productos) {
+        try {
+            
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("INSERT INTO cabastecimiento(id, capacidad, cantidad, direccion, vdisponibles, productos) VALUES ('" + id + "','" + capacidad + "','" + cantidad + "','" + direccion + "','" + vdisponibles + "','" + productos + "')");
+            while (rs.next()) {
+                id = rs.getInt(1);
+                capacidad = rs.getInt(2);
+                cantidad = rs.getInt(3);
+                direccion = rs.getInt(4);
+                vdisponibles = rs.getInt(5);
+                productos = rs.getString(6);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
