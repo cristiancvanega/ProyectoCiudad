@@ -26,14 +26,6 @@ public class Grafo {
         this.cargar();
     }
 
-    public Grafo(Arista[][] matrizAD, Nodo[] listNodos) {
-        this.matrizAD = matrizAD;
-        this.listNodos = listNodos;
-        this.ruta = new int[tamano][tamano];
-        this.matrAdy = new int[tamano][tamano];
-        this.cargar();
-    }
-
     /**
      * @return the matrizAD
      */
@@ -71,34 +63,43 @@ public class Grafo {
         this.ruta = new int[this.tamano][this.tamano];
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
-                if (this.matrizAD[i][j] != null) {
-                    this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-                }else
-                    this.mCostos[i][j] = 1000000;
+                if (i == j) {
+                    this.ruta[i][j] = 0;
+                    this.mCostos[i][j] = 0;
+                } else {
+                    if (this.matrizAD[i][j] != null) {
+                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+                    } else {
+                        this.mCostos[i][j] = 1000000;
+                    }
+                    this.ruta[i][j] = -1;
+                }
+
             }
         }
     }
 
-    public Nodo[] getNodosRuta(int origen, int destino){
-        
+    public Nodo[] getNodosRuta(int origen, int destino) {
+
         return null;
     }
-    
-    public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta){
+
+    public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta) {
 //        if(origen == destino)
 //            return;
 //        ruta.add(this.ruta[origen][destino]);
 //        getIntRuta(this.ruta[origen][destino], destino, ruta);
-        double [][] costos = this.floydwarshall();
-
+        double[][] costos = this.floydwarshall();
         for (int i = 0; i < this.tamano; i++) {
+            System.out.println("index: " + i);
             for (int j = 0; j < this.tamano; j++) {
-                System.out.print(", "+costos[i][j]);
+                System.out.print(", " + this.ruta[i][j]);
             }
             System.out.println("");
         }
     }
-    
+
     public double[][] floydwarshall() {
         int n = this.tamano;
         double[][] cMA = new double[this.tamano][this.tamano];
@@ -106,9 +107,9 @@ public class Grafo {
         for (int k = 0; k < this.tamano; k++) {
             for (int i = 0; i < this.tamano; i++) {
                 for (int j = 0; j < this.tamano; j++) {
-                    double calc = cMA[i][k] + cMA[k][j];
-                    if (calc < cMA[i][j]) {
-                        cMA[i][j] = calc;
+//                    double calc = cMA[i][k] + cMA[k][j];
+                    if (cMA[i][k] + cMA[k][j] <= cMA[i][j]) {
+                        cMA[i][j] = cMA[i][k] + cMA[k][j];
                         ruta[i][j] = k;
                     }
                 }
@@ -193,6 +194,6 @@ public class Grafo {
                 index++;
             }
         }
-        System.out.println("llenaMatrizNodos(): "+index);
+        System.out.println("llenaMatrizNodos(): " + index);
     }
 }

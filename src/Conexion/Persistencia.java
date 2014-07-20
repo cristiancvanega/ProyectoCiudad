@@ -201,4 +201,13 @@ public class Persistencia {
         }
         return ca;
     }
+    
+    public void insert(String insert){
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(insert);
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

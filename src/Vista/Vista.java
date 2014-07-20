@@ -214,6 +214,7 @@ public class Vista extends javax.swing.JFrame {
         ((Panel) panelFondo).setImagen("../Recursos/MapaCiudad.jpg");
         this.grafo = new Grafo.Grafo(108);
         ((Panel) panelFondo).setGrafo(this.grafo);
+        
 //        this.chbxHabDesN.setSelected(true);
     }
 
