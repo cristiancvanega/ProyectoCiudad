@@ -112,7 +112,7 @@ public class Persistencia {
             ResultSet rs = statement.executeQuery("SELECT i, j, distancia, "
                     + "velocidad, peso, tipo, id FROM arista");
             while (rs.next()) {
-                matrArista[rs.getInt(1)][rs.getInt(2)]
+                matrArista[rs.getInt("i")][rs.getInt("j")]
                         = new Arista(rs.getInt("distancia"), rs.getInt("velocidad"),
                                 rs.getDouble("peso"), rs.getBoolean("tipo"), rs.getInt("id"));
             }

@@ -8,6 +8,8 @@ package Grafo;
 
 import Implementacion.CDistribucion;
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
