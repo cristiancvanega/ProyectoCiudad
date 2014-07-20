@@ -123,7 +123,7 @@ public class Persistencia {
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
-        imprimeMatriz(matrArista, tamano);
+//        imprimeMatriz(matrArista, tamano);
         return matrArista;
     }
 

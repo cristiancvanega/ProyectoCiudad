@@ -6,6 +6,8 @@
 
 package Grafo;
 
+import java.awt.Rectangle;
+
 /**
  *
  * @author CRISTIAN
@@ -17,6 +19,12 @@ public class Arista {
     private boolean tipo; //si soporta o no trÃ¡fico de camiÃ³n.
     private int id;
     private double peso;
+    private int posXO;//Posición x origen
+    private int posYO;//posicion y origen
+    private int posXD;//posicion x destino
+    private int posYD;//posicion y destino
+    private Rectangle area;
+    private boolean obstruida;
 
     public Arista(int distancia, int velocidad, double peso, boolean tipo, int id) {
         this.distancia = distancia;
@@ -25,6 +33,7 @@ public class Arista {
         this.tipo = tipo;
         this.id = id;
         this.peso = peso;
+        this.obstruida = false;
     }
 
     
@@ -94,6 +103,57 @@ public class Arista {
     public void setPeso(double peso) {
         this.peso = peso;
     }
-    
+
+    public int getPosXO() {
+        return posXO;
+    }
+
+    public void setPosXO(int posXO) {
+        this.posXO = posXO;
+    }
+
+    public int getPosYO() {
+        return posYO;
+    }
+
+    public void setPosYO(int posYO) {
+        this.posYO = posYO;
+    }
+
+    public int getPosXD() {
+        return posXD;
+    }
+
+    public void setPosXD(int posXD) {
+        this.posXD = posXD;
+    }
+
+    public int getPosYD() {
+        return posYD;
+    }
+
+    public void setPosYD(int posYD) {
+        this.posYD = posYD;
+    }
+
+    public void crearArea(){
+        this.setArea(new Rectangle(this.posXD, this.posYD, 7, 7));
+    }
+
+    public Rectangle getArea() {
+        return area;
+    }
+
+    public void setArea(Rectangle area) {
+        this.area = area;
+    }
+
+    public boolean isObstruida() {
+        return obstruida;
+    }
+
+    public void setObstruida(boolean obstruida) {
+        this.obstruida = obstruida;
+    }
     
 }
