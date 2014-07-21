@@ -54,6 +54,7 @@ public class Grafo {
         this.listNodos = listNodos;
     }
 
+    
     private void cargar() {
         Conexion.Persistencia con = new Conexion.Persistencia();
 //        this.matrAdy = new int[this.tamano][this.tamano];
@@ -76,7 +77,6 @@ public class Grafo {
                     }
                     this.ruta[i][j] = -1;
                 }
-
             }
         }
         this.floydwarshall();
@@ -87,18 +87,18 @@ public class Grafo {
         return null;
     }
 
-    public void getIntRuta(int origen, int destino, int transicion, LinkedList<Integer> ruta) {
+    public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta) {
         if (this.ruta[origen][destino] == -1) {
             return;
         }
         System.out.println("origen: " + origen + ", destino: " + destino);
         ruta.add(this.ruta[origen][destino]);
-        getIntRuta(origen, this.ruta[origen][destino], destino, ruta);
+        getIntRuta(this.ruta[origen][destino], destino, ruta);
 //        double[][] costos = this.floydwarshall();
 //        for (int i = 0; i < this.tamano; i++) {
-//            System.out.println("index: " + i);
+////            System.out.println("index: " + i);
 //            for (int j = 0; j < this.tamano; j++) {
-//                System.out.print(", " + this.ruta[i][j]);
+//                System.out.print("," + this.ruta[i][j]);
 //            }
 //            System.out.println("");
 //        }
@@ -189,8 +189,6 @@ public class Grafo {
         this.matrizNodos[0][4] = this.listNodos[4];
         this.matrizNodos[0][5] = this.listNodos[5];
         this.matrizNodos[0][6] = this.listNodos[6];
-        this.matrizNodos[0][7] = this.listNodos[7];
-        this.matrizNodos[0][8] = this.listNodos[8];
         for (int i = 1; i < 10; i++) {
             for (int j = 0; j < 11; j++) {
                 this.matrizNodos[i][j] = this.listNodos[index];
@@ -204,39 +202,36 @@ public class Grafo {
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
                 if (matrizAD[i][j] != null) {
-//                    matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-//                    matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-//                    matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-//                    matrizAD[i][j].setPosYD(this.listNodos[j].getY());
-                    switch (this.getDireccion(matrizAD[i][j].getPosXO(), matrizAD[i][j].getPosYO(),
-                            matrizAD[i][j].getPosXD(), matrizAD[i][j].getPosYD())) {
+                    switch (this.getDireccion(this.listNodos[i].getX(), this.listNodos[i].getY(),
+                            this.listNodos[j].getX(), this.listNodos[j].getY())) {
                         case 1: {
                             matrizAD[i][j].setPosXO(this.listNodos[i].getX());
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY() - 10);
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 32);
+                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() +32);
                         }
                         break;
                         case 2: {
-                            matrizAD[i][j].setPosXO(this.listNodos[i].getX()+32);
+                            matrizAD[i][j].setPosXO(this.listNodos[i].getX() + 32);
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY());
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 10);
                             matrizAD[i][j].setPosYD(this.listNodos[j].getY());
-                            System.out.println("Doreccion dos");
                         }
                         break;
                         case 3: {
                             matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-                            matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 10);
+                            matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 37);
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 10);
+                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() -15);
+
                         }
                         break;
                         case 4: {
                             matrizAD[i][j].setPosXO(this.listNodos[i].getX() - 7);
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-                            matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 37);
+                            matrizAD[i][j].setPosXD(this.listNodos[j].getX() + 32);
                             matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+
                         }
                         break;
                     }
@@ -267,12 +262,32 @@ public class Grafo {
             }
         } else {
             if (xd > xo) {
-                res = 4;
-            } else {
                 res = 2;
+            } else {
+                res = 4;
             }
         }
 //        System.out.println("Res: " + res);
         return res;
+    }
+
+    public void eventoArista() {
+        for (int i = 0; i < this.tamano; i++) {
+            for (int j = 0; j < this.tamano; j++) {
+                if (i == j) {
+                    this.ruta[i][j] = 0;
+                    this.mCostos[i][j] = 0;
+                } else {
+                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
+                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+//                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+                    } else {
+                        this.mCostos[i][j] = 1000000;
+                    }
+                    this.ruta[i][j] = -1;
+                }
+            }
+        }
+        this.floydwarshall();
     }
 }

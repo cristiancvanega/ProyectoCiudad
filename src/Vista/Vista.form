@@ -39,6 +39,7 @@
                   <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                   <Component id="txtRuta" alignment="0" min="-2" pref="54" max="-2" attributes="0"/>
                   <Component id="chbxHabDesA" min="-2" max="-2" attributes="0"/>
+                  <Component id="chbxRPedido" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelFondo" pref="828" max="32767" attributes="0"/>
@@ -61,7 +62,9 @@
                       <Component id="chbxCrearElimCD" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="chbxHabDesA" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="346" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="chbxRPedido" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="320" max="32767" attributes="0"/>
                       <Component id="txtRuta" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="jButton2" min="-2" max="-2" attributes="0"/>
@@ -157,6 +160,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chbxHabDesAActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chbxRPedido">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pedido"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chbxRPedidoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
