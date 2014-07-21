@@ -182,14 +182,16 @@ public class Vista extends javax.swing.JFrame {
             Grafo.Arista[][] arista = this.grafo.getMatrizAD();
             for (int i = 0; i < this.tamano; i++) {
                 for (int j = 0; j < this.tamano; j++) {
-                    if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
-                        if (arista[i][j].isObstruida()) {
-                            arista[i][j].setObstruida(false);
-                        } else {
-                            arista[i][j].setObstruida(true);
+                    if (arista[i][j] != null) {
+                        if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
+                            if (arista[i][j].isObstruida()) {
+                                arista[i][j].setObstruida(false);
+                            } else {
+                                arista[i][j].setObstruida(true);
+                            }
+                            System.out.println("arista encontrada... i: " + i + ", j: " + j);
+                            this.grafo.eventoArista();
                         }
-                        System.out.println("arista encontrada... i: " + i + ", j: " + j);
-                        this.grafo.eventoArista();
                     }
                 }
             }
@@ -255,9 +257,11 @@ public class Vista extends javax.swing.JFrame {
         LinkedList<Integer> ruta = new LinkedList<>();
 //        int origen = 1;
 //        int destino = 25;
-        ruta.add(origen);
         this.grafo.getIntRuta(origen, destino, ruta);
-        ruta.add(destino);
+        if (!ruta.isEmpty()) {
+            ruta.addFirst(origen);
+//            ruta.add(destino);
+        }
         Grafo.Nodo[] trav = new Nodo[ruta.size()];
         for (int i = 0; i < ruta.size(); i++) {
             trav[i] = this.grafo.getListNodos()[ruta.get(i)];
@@ -266,8 +270,11 @@ public class Vista extends javax.swing.JFrame {
         for (Integer n : ruta) {
             System.out.print(", " + n);
         }
-        Thread hilo = new Thread(new Hilos.Vehiculo(this.jLabel1, trav));
-        hilo.start();
+        System.out.println("");
+        if (!ruta.isEmpty()) {
+            Thread hilo = new Thread(new Hilos.Vehiculo(this.jLabel1, trav));
+            hilo.start();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void chbxHabDesAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxHabDesAActionPerformed

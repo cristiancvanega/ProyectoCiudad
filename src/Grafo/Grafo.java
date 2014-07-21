@@ -13,8 +13,19 @@ import java.util.LinkedList;
  */
 public class Grafo {
 
+    /*
+     *Matriz de tipo Arista que contiene las aristas que conectan los nodos
+     *Se carga de la base de datos en el método cargar()
+     */
     private Arista[][] matrizAD;
+    /*
+     *Lista de nodos que contiene la ciudad, dichos nodos pueden albergar 
+     *centros de distribución y dentros de abastecimiento
+     */
     private Nodo[] listNodos;
+    /*
+     *Matriz de nodos
+     */
     Nodo[][] matrizNodos;
     int tamano;
     int[][] ruta;
@@ -54,7 +65,6 @@ public class Grafo {
         this.listNodos = listNodos;
     }
 
-    
     private void cargar() {
         Conexion.Persistencia con = new Conexion.Persistencia();
 //        this.matrAdy = new int[this.tamano][this.tamano];
@@ -71,11 +81,12 @@ public class Grafo {
                 } else {
                     if (this.matrizAD[i][j] != null) {
                         this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+                        this.ruta[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
                         this.mCostos[i][j] = 1000000;
+                        this.ruta[i][j] = -1;
                     }
-                    this.ruta[i][j] = -1;
                 }
             }
         }
@@ -88,10 +99,11 @@ public class Grafo {
     }
 
     public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta) {
-        if (this.ruta[origen][destino] == -1) {
+//        if (this.ruta[origen][destino] == -1) {
+        if (origen==destino) {
             return;
         }
-        System.out.println("origen: " + origen + ", destino: " + destino);
+//        System.out.println("origen: " + origen + ", destino: " + destino);
         ruta.add(this.ruta[origen][destino]);
         getIntRuta(this.ruta[origen][destino], destino, ruta);
 //        double[][] costos = this.floydwarshall();
@@ -114,7 +126,7 @@ public class Grafo {
 //                    double calc = cMA[i][k] + cMA[k][j];
                     if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
                         cMA[i][j] = cMA[i][k] + cMA[k][j];
-                        ruta[i][j] = k;
+                        ruta[i][j] = ruta[i][k];
                     }
                 }
             }
@@ -208,7 +220,7 @@ public class Grafo {
                             matrizAD[i][j].setPosXO(this.listNodos[i].getX());
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY() - 10);
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() +32);
+                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() + 32);
                         }
                         break;
                         case 2: {
@@ -222,7 +234,7 @@ public class Grafo {
                             matrizAD[i][j].setPosXO(this.listNodos[i].getX());
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 37);
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() -15);
+                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 15);
 
                         }
                         break;
@@ -272,6 +284,24 @@ public class Grafo {
     }
 
     public void eventoArista() {
+//        for (int i = 0; i < this.tamano; i++) {
+//            for (int j = 0; j < this.tamano; j++) {
+//                if (i == j) {
+//                    this.ruta[i][j] = 0;
+//                    this.mCostos[i][j] = 0;
+//                } else {
+//                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
+//                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+////                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+//                    } else {
+//                        this.mCostos[i][j] = 1000000;
+//                    }
+//                    this.ruta[i][j] = -1;
+//                }
+//            }
+//        }
+//        this.floydwarshall();
+        
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
                 if (i == j) {
@@ -280,14 +310,17 @@ public class Grafo {
                 } else {
                     if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
                         this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+                        this.ruta[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
                         this.mCostos[i][j] = 1000000;
+                        this.ruta[i][j] = -1;
                     }
-                    this.ruta[i][j] = -1;
                 }
             }
         }
         this.floydwarshall();
+        
+        
     }
 }

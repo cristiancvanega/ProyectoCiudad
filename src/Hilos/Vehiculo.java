@@ -22,7 +22,7 @@ public class Vehiculo implements Runnable {
         this.carro = carro;
 //        this.grafo = grafo;
         this.movimiento = movimiento;
-        System.out.println("Vehiculo x: "+movimiento[0].getX()+" y: "+movimiento[0].getY());
+//        System.out.println("Vehiculo x: "+movimiento[0].getX()+" y: "+movimiento[0].getY());
         this.carro.setLocation(movimiento[0].getX() + 80, movimiento[0].getY());
     }
     
@@ -51,7 +51,7 @@ public class Vehiculo implements Runnable {
             else
                 res = 4;
         }  
-        System.out.println("Res: " + res);
+//        System.out.println("Res: " + res);
         return res;
     }
     
@@ -60,27 +60,27 @@ public class Vehiculo implements Runnable {
         int i = 1;
         while (i<this.movimiento.length) {
             try {
-                System.out.println("i: "+i+" dir: "+getDireccion(i));
+//                System.out.println("i: "+i+" dir: "+getDireccion(i));
                 switch(this.getDireccion(i)){
                     //Se mueve hacia arriba
                     case 1 : while(this.movimiento[i].getY() < this.carro.getY()){
                         this.carro.setLocation(this.carro.getX(), this.carro.getY() - 5);
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     }break;
                     //Se mueve hacia la derecha
                     case 2 : while(this.movimiento[i].getX() > this.carro.getX() - 80){
                         this.carro.setLocation(this.carro.getX() + 5, this.carro.getY());
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     }break;
                     //Se mueve hacia abajo
                     case 3 : while(this.movimiento[i].getY() > this.carro.getY()){
                         this.carro.setLocation(this.carro.getX(), this.carro.getY() + 5);
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     }break;
                     //Se mueve hacia la izquierda
                     case 4 : while(this.movimiento[i].getX() + 80 < this.carro.getX()){
                         this.carro.setLocation(this.carro.getX() -5 , this.carro.getY());
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     }break;
                     case 5:{
                         System.out.println("El nodo es null, vehículo");
@@ -88,7 +88,7 @@ public class Vehiculo implements Runnable {
                     }
                 }
                 System.out.println("x: "+this.carro.getX()+" y: "+this.carro.getY());
-                Thread.sleep(10);
+                Thread.sleep(100);
                         i++;
             } catch (Exception e) {
                 System.out.println(this.getClass() + " , Error: " + e);

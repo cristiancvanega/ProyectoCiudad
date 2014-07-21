@@ -13,18 +13,18 @@ import java.awt.Rectangle;
  * @author CRISTIAN
  */
 public class Arista {
-    private int distancia;
-    private int velocidad;
+    private int distancia;//Distancia
+    private int velocidad;//Velocidad
     private int carriles; //Cantidad de carriles que tiene la arista
     private boolean tipo; //si soporta o no trÃ¡fico de camiÃ³n.
     private int id;
-    private double peso;
+    private double peso;//Relación entre distancia y velocidad
     private int posXO;//Posición x origen
     private int posYO;//posicion y origen
     private int posXD;//posicion x destino
     private int posYD;//posicion y destino
-    private Rectangle area;
-    private boolean obstruida;
+    private Rectangle area;//Para simplificar la cción de evntos
+    private boolean obstruida;//Falso si la arista está disponible, de lo contrario true
 
     public Arista(int distancia, int velocidad, double peso, boolean tipo, int id) {
         this.distancia = distancia;
