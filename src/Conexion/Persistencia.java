@@ -202,11 +202,9 @@ public class Persistencia {
         }
         return ca;
     }
-<<<<<<< HEAD
 
     public void insertCAbastecimiento(int id, int capacidad, int cantidad, int direccion, int vdisponibles, String productos) {
         try {
-            
             statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery("INSERT INTO cabastecimiento(id, capacidad, cantidad, direccion, vdisponibles, productos) VALUES ('" + id + "','" + capacidad + "','" + cantidad + "','" + direccion + "','" + vdisponibles + "','" + productos + "')");
             while (rs.next()) {
@@ -217,20 +215,8 @@ public class Persistencia {
                 vdisponibles = rs.getInt(5);
                 productos = rs.getString(6);
             }
-
-=======
-    
-    public void insert(String insert){
-        try {
-            statement = this.connection.createStatement();
-            ResultSet rs = statement.executeQuery(insert);
->>>>>>> b4dde5ad5bf01a383e94d4b1ca469e4aa30df746
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> b4dde5ad5bf01a383e94d4b1ca469e4aa30df746
 }

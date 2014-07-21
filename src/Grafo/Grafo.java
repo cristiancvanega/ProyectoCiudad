@@ -222,6 +222,7 @@ public class Grafo {
                             matrizAD[i][j].setPosYO(this.listNodos[i].getY());
                             matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 10);
                             matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                            System.out.println("Doreccion dos");
                         }
                         break;
                         case 3: {
@@ -266,9 +267,9 @@ public class Grafo {
             }
         } else {
             if (xd > xo) {
-                res = 2;
-            } else {
                 res = 4;
+            } else {
+                res = 2;
             }
         }
 //        System.out.println("Res: " + res);

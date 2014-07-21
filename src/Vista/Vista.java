@@ -206,7 +206,7 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_chbxCrearElimCDActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Grafo.Nodo[] ruta = new Nodo[15];
+        Grafo.Nodo[] ruta = new Nodo[16];
         ruta[0] = this.grafo.getListNodos()[9];
         ruta[1] = this.grafo.getListNodos()[10];
         ruta[2] = this.grafo.getListNodos()[11];
@@ -218,11 +218,12 @@ public class Vista extends javax.swing.JFrame {
         ruta[8] = this.grafo.getListNodos()[33];
         ruta[9] = this.grafo.getListNodos()[22];
         ruta[10] = this.grafo.getListNodos()[11];
-        ruta[11] = null;
-//        ruta[11] = this.grafo.getListNodos()[10];
+//        ruta[11] = null;
+        ruta[11] = this.grafo.getListNodos()[10];
         ruta[12] = this.grafo.getListNodos()[9];
         ruta[13] = this.grafo.getListNodos()[1];
-        ruta[14] = this.grafo.getListNodos()[4];
+        ruta[14] = this.grafo.getListNodos()[2];
+        ruta[15] = this.grafo.getListNodos()[4];
         Thread hilo = new Thread(new Hilos.Vehiculo(this.jLabel1, ruta));
         hilo.start();
         System.out.println("Terminó el hilo vista");
