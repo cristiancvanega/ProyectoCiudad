@@ -8,8 +8,6 @@ package Grafo;
 
 import Implementacion.CDistribucion;
 import java.awt.Rectangle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -132,6 +130,4 @@ public class Nodo {
     public void setHabilidato(boolean habilidato) {
         this.habilidato = habilidato;
     }
-    
-    
 }
