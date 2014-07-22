@@ -154,34 +154,46 @@ public class Vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelFondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelFondoMouseClicked
+        boolean bandera = true;//Para salirse cuando se encuentre el nodo buscado
+        int indice = 1;//cota inferioor, para evitar que se quede en ciclo infinito
         if (this.chbxHabDesN.isSelected()) {
-            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
-                if (nodo != null) {
-                    if (nodo.getArea().contains(evt.getX(), evt.getY())) {
-                        if (nodo.isHabilidato()) {
-                            nodo.setHabilidato(false);
-                        } else if (nodo.getHuesped() != null) {
-                            nodo.setHabilidato(true);
+            while (bandera && indice <= this.tamano) {
+                if (this.grafo.getListNodos()[indice] != null) {
+                    if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
+                        if (this.grafo.getListNodos()[indice].isHabilidato()) {
+                            this.grafo.getListNodos()[indice].setHabilidato(false);
+                        } else if (this.grafo.getListNodos()[indice].getHuesped() != null) {
+                            this.grafo.getListNodos()[indice].setHabilidato(true);
                         }
+                        bandera = false;
                     }
                 }
+                indice++;
             }
-        } else if (this.chbxCrearElimCD.isSelected()) {
-            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
-                if (nodo != null) {
-                    if (nodo.getArea().contains(evt.getX(), evt.getY())) {
-                        if (nodo.getHuesped() == null) {
-                            nodo.creaCDistr();
+        }else if (this.chbxCrearElimCD.isSelected()) {
+            while (bandera && indice < this.tamano) {
+                if (this.grafo.getListNodos()[indice] != null) {
+                    if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
+                        if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
+                        if (this.grafo.getListNodos()[indice].getHuesped() == null) {
+                            this.grafo.getListNodos()[indice].creaCDistr();
                         } else {
-                            nodo.setHuesped(null);
+                            this.grafo.getListNodos()[indice].setHuesped(null);
                         }
                     }
+                        bandera = false;
+                    }
                 }
+                indice++;
             }
-        } else if (this.chbxHabDesA.isSelected()) {
+        }else if (this.chbxHabDesA.isSelected()) {
             Grafo.Arista[][] arista = this.grafo.getMatrizAD();
             for (int i = 0; i < this.tamano; i++) {
+                if(!bandera)
+                        break;
                 for (int j = 0; j < this.tamano; j++) {
+                    if(!bandera)
+                        break;
                     if (arista[i][j] != null) {
                         if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
                             if (arista[i][j].isObstruida()) {
@@ -191,22 +203,103 @@ public class Vista extends javax.swing.JFrame {
                             }
                             System.out.println("arista encontrada... i: " + i + ", j: " + j);
                             this.grafo.eventoArista();
+                            bandera = false;
                         }
                     }
                 }
             }
-//            System.out.println("Buscando arista...");
-        } else if (this.chbxRPedido.isSelected()) {
-            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
-                if (nodo != null) {
-                    if (nodo.getArea().contains(evt.getX(), evt.getY())
-                            && !this.listNoeditables.contains(nodo.getId())
-                            && nodo.isHabilidato()) {
+//            indice =0;
+//            int indice2 = 0;
+//            while(bandera && indice < this.tamano){
+//                while(bandera && indice2 < this.tamano){
+//                    if (arista[indice][indice2] != null) {
+//                        if (arista[indice][indice2].getArea().contains(evt.getX(), evt.getY())) {
+//                            if (arista[indice][indice2].isObstruida()) {
+//                                arista[indice][indice2].setObstruida(false);
+//                            } else {
+//                                arista[indice][indice2].setObstruida(true);
+//                            }
+//                            System.out.println("arista encontrada... i: " + indice + ", j: " + indice2);
+//                            this.grafo.eventoArista();
+//                            bandera = false;
+//                        }
+//                    }
+//                    indice2 ++;
+//                }
+//                indice++;
+//            }
+            System.out.println("Hab/des arista");
+        }else if (this.chbxRPedido.isSelected()) {
+            while(bandera && indice < this.tamano){
+                if (this.grafo.getListNodos()[indice] != null) {
+                    if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())
+                            && !this.listNoeditables.contains(this.grafo.getListNodos()[indice].getId())
+                            && this.grafo.getListNodos()[indice].isHabilidato()) {
                         this.pedido.setVisible(true);
+                        bandera = false;
                     }
                 }
+                indice++;
             }
         }
+        /*
+        *El siguiente bloque funciona pero el anterior optimiza tiempo de ejecución,
+        *pués usa while con una bandera para cortar la búsqueda en caso de encontrar
+        *el nodo
+        */
+//        if (this.chbxHabDesN.isSelected()) {
+//            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
+//                if (nodo != null) {
+//                    if (nodo.getArea().contains(evt.getX(), evt.getY())) {
+//                        if (nodo.isHabilidato()) {
+//                            nodo.setHabilidato(false);
+//                        } else if (nodo.getHuesped() != null) {
+//                            nodo.setHabilidato(true);
+//                        }
+//                    }
+//                }
+//            }
+//        } else if (this.chbxCrearElimCD.isSelected()) {
+//            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
+//                if (nodo != null) {
+//                    if (nodo.getArea().contains(evt.getX(), evt.getY())) {
+//                        if (nodo.getHuesped() == null) {
+//                            nodo.creaCDistr();
+//                        } else {
+//                            nodo.setHuesped(null);
+//                        }
+//                    }
+//                }
+//            }
+//        } else if (this.chbxHabDesA.isSelected()) {
+//            Grafo.Arista[][] arista = this.grafo.getMatrizAD();
+//            for (int i = 0; i < this.tamano; i++) {
+//                for (int j = 0; j < this.tamano; j++) {
+//                    if (arista[i][j] != null) {
+//                        if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
+//                            if (arista[i][j].isObstruida()) {
+//                                arista[i][j].setObstruida(false);
+//                            } else {
+//                                arista[i][j].setObstruida(true);
+//                            }
+//                            System.out.println("arista encontrada... i: " + i + ", j: " + j);
+//                            this.grafo.eventoArista();
+//                        }
+//                    }
+//                }
+//            }
+////            System.out.println("Buscando arista...");
+//        } else if (this.chbxRPedido.isSelected()) {
+//            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
+//                if (nodo != null) {
+//                    if (nodo.getArea().contains(evt.getX(), evt.getY())
+//                            && !this.listNoeditables.contains(nodo.getId())
+//                            && nodo.isHabilidato()) {
+//                        this.pedido.setVisible(true);
+//                    }
+//                }
+//            }
+//        }
     }//GEN-LAST:event_panelFondoMouseClicked
 
     private void chbxHabDesNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxHabDesNActionPerformed
