@@ -6,6 +6,8 @@
 package Conexion;
 
 import Grafo.Arista;
+import Implementacion.Producto;
+import Vista.CAbastecimiento;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -207,15 +209,7 @@ public class Persistencia {
     public void insertCAbastecimiento(int id, int capacidad, int cantidad, int direccion, int vdisponibles, String productos) {
         try {
             statement = this.connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO cabastecimiento(id, capacidad, cantidad, direccion, vdisponibles, productos) VALUES ('" + id + "','" + capacidad + "','" + cantidad + "','" + direccion + "','" + vdisponibles + "','" + productos + "')");
-            while (rs.next()) {
-                id = rs.getInt(1);
-                capacidad = rs.getInt(2);
-                cantidad = rs.getInt(3);
-                direccion = rs.getInt(4);
-                vdisponibles = rs.getInt(5);
-                productos = rs.getString(6);
-            }
+            statement.executeQuery("INSERT INTO cabastecimiento(id, capacidad, cantidad, direccion, vdisponibles, productos) VALUES ('" + id + "','" + capacidad + "','" + cantidad + "','" + direccion + "','" + vdisponibles + "','" + productos + "')");
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -260,7 +254,7 @@ public class Persistencia {
     public void insertPedidoMapa(int id, int idPedido) {
         try {
             statement = this.connection.createStatement();
-            statement.executeQuery("INSERT INTO pedidos(id, idpedido) VALUES (" + id + ", " + idPedido + ")");
+//            statement.executeQuery("INSERT INTO pedidos(id, idpedido) VALUES (" + id + ", " + idPedido + ")");
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -272,7 +266,7 @@ public class Persistencia {
             statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT max(id) FROM pedidos");
             while (rs.next()) {
-                res = rs.getInt("max") + 1;
+                res = rs.getInt("max");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
@@ -292,5 +286,43 @@ public class Persistencia {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
+    }
+    
+    public void setCAbastecimiento(Grafo.Nodo[] listN){
+//        try {
+//            statement = this.connection.createStatement();
+//            ResultSet rs = statement.executeQuery("SELECT id, nombre, cantidad, "
+//                    + "fvencimiento FROM producto");
+//            while (rs.next()) {
+//                 
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        Producto p1 = new Producto(new Date(2016, 01, 12), "panela", 1);
+        Producto p2 = new Producto(new Date(2017, 10, 30), "arroz", 2);
+        Producto p3 = new Producto(new Date(2014, 07, 18), "leche", 3);
+        Producto p4 = new Producto(new Date(2014, 8, 15), "arepa", 4);
+        Producto p5 = new Producto(new Date(2014, 05, 12), "colino", 5);
+        Producto p6 = new Producto(new Date(2014, 12, 03), "sal", 6);
+        Producto p7 = new Producto(new Date(2014, 10, 31), "azucar", 7);
+        Producto p8 = new Producto(new Date(2015, 02, 02), "atun", 8);
+        Producto p9 = new Producto(new Date(2014, 8, 01), "mermelada", 9);
+        Producto p10 = new Producto(new Date(2014, 10, 8), "aceite", 10);
+        Producto[] pr1 = {p1,p2};
+        Producto[] pr2 = {p3,p4};
+        Producto[] pr3 = {p5,p6};
+        Producto[] pr4 = {p7,p8};
+        Producto[] pr5 = {p9,p10};
+        int[] cant1 = {4,5};
+        int[] cant2 = {3,12};
+        int[] cant3 = {15,10};
+        int[] cant4 = {11,8};
+        int[] cant5 = {10,6};
+        listN[1].setHuesped(new Implementacion.CAbastecimiento(400, pr1, cant1, 1));
+        listN[2].setHuesped(new Implementacion.CAbastecimiento(400, pr2, cant2, 2));
+        listN[3].setHuesped(new Implementacion.CAbastecimiento(400, pr3, cant3, 3));
+        listN[4].setHuesped(new Implementacion.CAbastecimiento(400, pr4, cant4, 4));
+        listN[5].setHuesped(new Implementacion.CAbastecimiento(400, pr5, cant5, 5));
     }
 }

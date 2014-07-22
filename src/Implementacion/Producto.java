@@ -13,8 +13,37 @@ import java.util.Date;
  * @author PC
  */
 public class Producto {
-    Date fvencimiento;
-    String nombre;
-    int cantidad;
-    int id;
+    private Date fvencimiento;
+    private String nombre;
+    private int id;
+
+    public Producto(Date fvencimiento, String nombre, int id) {
+        this.fvencimiento = fvencimiento;
+        this.nombre = nombre;
+        this.id = id;
+    }
+
+    public Date getFvencimiento() {
+        return fvencimiento;
+    }
+
+    public void setFvencimiento(Date fvencimiento) {
+        this.fvencimiento = fvencimiento;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

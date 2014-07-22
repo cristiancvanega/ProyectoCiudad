@@ -1,11 +1,10 @@
 package Vista;
 
+import Conexion.Persistencia;
 import Grafo.Arista;
 import Grafo.Nodo;
-import Hilos.Vehiculo;
+import Implementacion.CDistribucion;
 import java.util.LinkedList;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Vista extends javax.swing.JFrame {
@@ -15,6 +14,9 @@ public class Vista extends javax.swing.JFrame {
     int tamano;
     LinkedList<Integer> listNoeditables;
     Pedidos pedido;
+    int origen;
+    int intermedio;
+    int destino;
 
     /*A continuación los datos que tiene listEstVehiculos:
      int vehiculosAct;
@@ -24,12 +26,24 @@ public class Vista extends javax.swing.JFrame {
      int vehiculosTope;//Cantidad máxima de vehículos
      */
     LinkedList<Integer> listEstVehiculos;//
-    LinkedList<Hilos.Vehiculo> listHVehiculo;
+    LinkedList<Hilos.Vehiculo> listHVehiculo;//Lista de Hilos.Vehiculos
+
+    //Estructura que guarda la los pedidos
+    int[][] HMpedidos;
+    int inicSust;
+    Grafo.Nodo[] estr;
+    int[] respuesta;
+    int indexResp;
+    double costo;
+    LinkedList<int[]> respuestaS = new LinkedList<>();
+    boolean VCA = false;
+    boolean VCD = false;
 
     public Vista() {
         initComponents();
         cont = 64;
         this.cargar();
+        this.inicSust = 1;
     }
 
     @SuppressWarnings("unchecked")
@@ -57,17 +71,13 @@ public class Vista extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         btnAddCarro = new javax.swing.JButton();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        lblMAX = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        btnAceptar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("La Ciudad Del 5");
@@ -86,11 +96,11 @@ public class Vista extends javax.swing.JFrame {
         panelFondo.setLayout(panelFondoLayout);
         panelFondoLayout.setHorizontalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 824, Short.MAX_VALUE)
+            .addGap(0, 858, Short.MAX_VALUE)
         );
         panelFondoLayout.setVerticalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 612, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         chbxHabDesN.setText("Hab/Des Nodos");
@@ -155,6 +165,33 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,61 +200,51 @@ public class Vista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chbxHabDesN)
                     .addComponent(chbxCrearElimCD)
-                    .addComponent(btnPrutaPLabel)
-                    .addComponent(btnPRParametros)
                     .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chbxHabDesA)
                     .addComponent(chbxRPedido)
                     .addComponent(chbxIArista)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAddCarro))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel16))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel17))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel9))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel19)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel9))
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel8))
-                                    .addComponent(jLabel15))
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10))
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel6))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
+                                    .addComponent(jLabel6)))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(btnAddCarro))
+                    .addComponent(btnAceptar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lblMAX, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+                    .addComponent(btnPrutaPLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnPRParametros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,7 +253,7 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                        .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(chbxHabDesN)
@@ -238,60 +265,120 @@ public class Vista extends javax.swing.JFrame {
                         .addComponent(chbxRPedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chbxIArista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddCarro)
-                        .addGap(36, 36, 36)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMAX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAceptar)
+                        .addGap(25, 25, 25)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(5, 5, 5)
                         .addComponent(btnPRParametros)
                         .addGap(18, 18, 18)
                         .addComponent(btnPrutaPLabel)
                         .addGap(24, 24, 24)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel13)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel17)
-                                        .addComponent(jLabel16)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(jLabel5)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jLabel4))
-                                                .addComponent(jLabel6)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel14)
-                                                .addComponent(jLabel7))
-                                            .addGap(6, 6, 6)))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel9)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel12)
-                                        .addComponent(jLabel15)
-                                        .addComponent(jLabel18))
-                                    .addComponent(jLabel20))))
+                        .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addGap(20, 20, 20))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel4))
+                                        .addComponent(jLabel6)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel1))
+                                    .addGap(6, 6, 6)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel8)))
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton2)
+                        .addGap(61, 61, 61))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void sustentacion(int indice) {
+        respuesta = new int[this.tamano];
+        indexResp = 0;
+        for (int i = 0; i < this.tamano; i++) {
+            respuesta[i] = 0;
+        }
+        sustentacion2(1, indice);
+    }
+
+    public void sustentacion2(int etapa, int indice) {
+        this.respuesta[etapa] = 1;
+        for (int i = 0; i < this.tamano; i++) {
+            if (this.grafo.getMatrizAD()[indice][i] != null) {
+                if (!this.grafo.getMatrizAD()[indice][i].isObstruida()) {
+                    this.grafo.getMatrizAD()[indice][i].setObstruida(true);
+                    if (this.grafo.getListNodos()[i].getHuesped() instanceof CAbastecimiento) {
+                        VCA = true;
+                    }else if (this.grafo.getListNodos()[i].getHuesped() instanceof CDistribucion) {
+                        VCD = true;
+                    }
+                    if (i == indice && VCD && VCA) {
+                        int[] resp = new int[this.tamano];
+                        for (int j = 1; j < this.tamano; j++) {
+                            resp[j] = respuesta[j];
+                        }
+                        this.respuestaS.add(resp);
+                    } else {
+                        sustentacion2(etapa + 1, i);
+                    }
+                    this.grafo.getMatrizAD()[indice][i].setObstruida(false);
+                }
+            }
+        }
+        respuesta[etapa] = 0;
+    }
+
+    public void menorCosto(int indice) {
+        int anterior = indice;
+        
+        int index = respuesta[indice];
+        double costoT=this.grafo.getRuta()[index][indice];
+        int k = 0;
+        for (int i = 0; i < this.respuestaS.size(); i++) {
+            while(k <= this.tamano){
+                
+                k++;
+            }
+        }
+    }
+
+    public int vecinoMCercano(int nodo) {
+        costo = 1000;
+        int res = 0;
+        for (int i = 0; i < this.tamano; i++) {
+            if (this.grafo.getMatrizAD()[nodo][i].getPeso() < costo) {
+                costo = this.grafo.getMatrizAD()[nodo][i].getPeso();
+                res = i;
+            }
+        }
+        return res;
+    }
+
 
     private void panelFondoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelFondoMouseClicked
         boolean bandera = true;//Para salirse cuando se encuentre el nodo buscado
@@ -312,7 +399,8 @@ public class Vista extends javax.swing.JFrame {
             }
         } else if (this.chbxCrearElimCD.isSelected()) {
             while (bandera && indice < this.tamano) {
-                if (this.grafo.getListNodos()[indice] != null) {
+                if (this.grafo.getListNodos()[indice] != null
+                        && !this.listNoeditables.contains(indice)) {
                     if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
                         if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
                             if (this.grafo.getListNodos()[indice].getHuesped() == null) {
@@ -409,14 +497,16 @@ public class Vista extends javax.swing.JFrame {
             }
         } else if (this.chbxRPedido.isSelected()) {
             while (bandera && indice < this.tamano) {
-                if (this.grafo.getListNodos()[indice] != null) {
+                if (this.grafo.getListNodos()[indice] != null
+                        && !this.listNoeditables.contains(indice)) {
                     Conexion.Persistencia con = new Conexion.Persistencia();
                     if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())
                             && !this.listNoeditables.contains(this.grafo.getListNodos()[indice].getId())
                             && this.grafo.getListNodos()[indice].isHabilidato()) {
-                        this.pedido.setDatos(con.getIDPedido(),
-                                this.grafo.getListNodos()[indice].getId());//Seteamos algunos datos necesarios
-                        this.pedido.setVisible(true);
+                        this.origen = this.grafo.getListNodos()[indice].getId();
+//                        this.pedido.setDatos(con.getIDPedidoMapa(),
+//                                this.grafo.getListNodos()[indice].getId());//Seteamos algunos datos necesarios
+//                        this.pedido.setVisible(true);
                         bandera = false;
                     }
                 }
@@ -503,33 +593,34 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_chbxCrearElimCDActionPerformed
 
     private void btnPrutaPLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrutaPLabelActionPerformed
-        int origen = Integer.parseInt(this.txtRuta.getText().split(",")[0]);
-        int destino = Integer.parseInt(this.txtRuta.getText().split(",")[1]);
-        LinkedList<Integer> ruta = new LinkedList<>();
-        this.grafo.getIntRutaCamion(origen, destino, ruta);
-        if (!ruta.isEmpty()) {
-            ruta.addFirst(origen);
-        }
-        Grafo.Nodo[] trav = new Nodo[ruta.size()];
-        for (int i = 0; i < ruta.size(); i++) {
-            trav[i] = this.grafo.getListNodos()[ruta.get(i)];
-        }
-        System.out.println("Tam ruta: " + ruta.size());
-        for (Integer n : ruta) {
-            System.out.print(", " + n);
-        }
-        System.out.println("");
-        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
-            System.out.println("antes de...");
-            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
-            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
-            this.setVehicTxtSalida();
-            Thread hilo = new Thread(new Hilos.Vehiculo(jLabel2, trav,
-                    this.txtSalida, this.listEstVehiculos, this.grafo,
-                    new Implementacion.Vehiculo(40, 21, true)));
-            hilo.start();
-        }
-        System.out.println("despues de...");
+        System.out.println("" + ((int) (Math.random() * (6)) + 1));
+//        int origen = Integer.parseInt(this.txtRuta.getText().split(",")[0]);
+//        int destino = Integer.parseInt(this.txtRuta.getText().split(",")[1]);
+//        LinkedList<Integer> ruta = new LinkedList<>();
+//        this.grafo.getIntRutaCamion(origen, destino, ruta);
+//        if (!ruta.isEmpty()) {
+//            ruta.addFirst(origen);
+//        }
+//        Grafo.Nodo[] trav = new Nodo[ruta.size()];
+//        for (int i = 0; i < ruta.size(); i++) {
+//            trav[i] = this.grafo.getListNodos()[ruta.get(i)];
+//        }
+//        System.out.println("Tam ruta: " + ruta.size());
+//        for (Integer n : ruta) {
+//            System.out.print(", " + n);
+//        }
+//        System.out.println("");
+//        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
+//            System.out.println("antes de...");
+//            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+//            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+//            this.setVehicTxtSalida();
+//            Thread hilo = new Thread(new Hilos.Vehiculo(jLabel2, trav,
+//                    this.txtSalida, this.listEstVehiculos, this.grafo,
+//                    new Implementacion.Vehiculo(40, 21, true)));
+//            hilo.start();
+//        }
+//        System.out.println("despues de...");
 
     }//GEN-LAST:event_btnPrutaPLabelActionPerformed
 
@@ -600,6 +691,64 @@ public class Vista extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddCarroActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        Persistencia persistencia = new Persistencia();
+        MAXcantidad(persistencia.cargarCantidad());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        this.movimiento();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+//        this.susten
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.inicSust = Integer.parseInt(this.txtRuta.getText().toString());
+        sustentacion(inicSust);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void movimiento() {
+
+//        intermedio = ((int)(Math.random() * (6)) + 1);
+        intermedio = 3;
+        LinkedList<Integer> ruta = new LinkedList<>();
+
+        this.grafo.getIntRuta(origen, intermedio, ruta);
+        int tamano = ruta.size();
+        if (!ruta.isEmpty()) {
+            ruta.addFirst(origen);
+        }
+        this.grafo.getIntRuta(intermedio, destino, ruta);
+
+        if (ruta.size() != tamano) {
+            ruta.add(tamano, intermedio);
+        }
+
+        origen = destino;
+        Grafo.Nodo[] trav = new Nodo[ruta.size()];
+        for (int i = 0; i < ruta.size(); i++) {
+            trav[i] = this.grafo.getListNodos()[ruta.get(i)];
+        }
+        System.out.println("Tam ruta: " + ruta.size());
+        for (Integer n : ruta) {
+            System.out.print(", " + n);
+        }
+        System.out.println("");
+        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
+            System.out.println("antes de...");
+            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+            this.setVehicTxtSalida();
+            Thread hilo = new Thread(new Hilos.Vehiculo(jLabel1, trav,
+                    this.txtSalida, this.listEstVehiculos, this.grafo,
+                    new Implementacion.Vehiculo(40, 22, false)));
+            hilo.start();
+        }
+    }
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
@@ -612,6 +761,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnAddCarro;
     private javax.swing.JButton btnPRParametros;
     private javax.swing.JButton btnPrutaPLabel;
@@ -620,19 +770,12 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JCheckBox chbxHabDesN;
     private javax.swing.JCheckBox chbxIArista;
     private javax.swing.JCheckBox chbxRPedido;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -641,18 +784,24 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblMAX;
     public javax.swing.JPanel panelFondo;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtRuta;
     private javax.swing.JTextArea txtSalida;
     // End of variables declaration//GEN-END:variables
 
     private void cargar() {
+        Persistencia p = new Persistencia();
         this.tamano = 108;
+        this.HMpedidos = new int[10][2];
         ((Panel) panelFondo).setImagen("../Recursos/MapaCiudad.jpg");
         this.grafo = new Grafo.Grafo(this.tamano);
         ((Panel) panelFondo).setGrafo(this.grafo);
         this.llenaNoEditables();
-        this.pedido = new Pedidos();
+//        this.pedido = new Pedidos();
+        this.listHVehiculo = new LinkedList<>();
+//        this.pedido.cargaDatosInicial(listHVehiculo, grafo, HMpedidos, listEstVehiculos);
         this.listEstVehiculos = new LinkedList<Integer>();
         this.listEstVehiculos.add(0);
         this.listEstVehiculos.add(10);
@@ -660,34 +809,37 @@ public class Vista extends javax.swing.JFrame {
         this.listEstVehiculos.add(10);
         this.listEstVehiculos.add(16);
         this.setVehicTxtSalida();
+        this.llenarCombobox(p.cargarProductos());
+        this.origen = 1;
+        this.intermedio = 1;
+        this.destino = 1;
+        this.jLabel1.setLocation(this.grafo.getListNodos()[1].getX(), this.grafo.getListNodos()[1].getY());
 
         /*Llenamos la lista de vehículos seteándole además un objeto de tipo carro y otro de 
          *tipo Implementacion.Vehículo
          */
-        this.jLabel1.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel2.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel3.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel4.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel5.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-
-        this.jLabel6.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel7.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel8.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel9.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel10.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-
-        this.jLabel11.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel12.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel13.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-        this.jLabel14.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-        this.jLabel15.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-
-        this.jLabel16.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel1.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel2.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel3.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel4.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel5.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel6.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel7.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel8.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel9.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel10.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//
+//        this.jLabel11.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel12.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel13.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel14.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel15.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//
+//        this.jLabel16.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
 //        this.jLabel17.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
 //        this.jLabel18.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
 //        this.jLabel19.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
 //        this.jLabel20.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
-
         //Seteamos las posiciones de los labels para que no se descuadre la vista
 //        this.jLabel1.setLocation(50, 700);
 //        this.jLabel2.setLocation(100, 701);
@@ -712,45 +864,42 @@ public class Vista extends javax.swing.JFrame {
 //        this.jLabel18.setLocation(900, 717);
 //        this.jLabel19.setLocation(950, 718);
 //        this.jLabel20.setLocation(1000, 719);
-        
         //Adicionamos a la lista 20 objetos de tipo Hilos.Vehiculo
-        this.listHVehiculo = new LinkedList<>();
-        this.listHVehiculo.add(new Vehiculo(jLabel1, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 1, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel2, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 2, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel3, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 3, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel4, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 4, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel5, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 5, true)));
-        
-        this.listHVehiculo.add(new Vehiculo(jLabel6, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 6, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel7, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 7, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel8, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 8, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel9, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 9, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel10, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 10, false)));
-
-        
-        this.listHVehiculo.add(new Vehiculo(jLabel11, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 11, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel12, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 12, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel13, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 13, true)));
-        this.listHVehiculo.add(new Vehiculo(jLabel14, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 14, false)));
-        this.listHVehiculo.add(new Vehiculo(jLabel15, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 15, true)));
-        
-        this.listHVehiculo.add(new Vehiculo(jLabel16, null, this.txtSalida,
-                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 16, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel1, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 1, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel2, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 2, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel3, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 3, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel4, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 4, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel5, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 5, true)));
+//
+//        this.listHVehiculo.add(new Vehiculo(jLabel6, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 6, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel7, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 7, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel8, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 8, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel9, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 9, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel10, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 10, false)));
+//
+//        this.listHVehiculo.add(new Vehiculo(jLabel11, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 11, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel12, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 12, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel13, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 13, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel14, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 14, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel15, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 15, true)));
+//
+//        this.listHVehiculo.add(new Vehiculo(jLabel16, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 16, false)));
 //        this.listHVehiculo.add(new Vehiculo(jLabel17, null, this.txtSalida,
 //                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 17, true)));
 //        this.listHVehiculo.add(new Vehiculo(jLabel18, null, this.txtSalida,
@@ -776,5 +925,41 @@ public class Vista extends javax.swing.JFrame {
         this.txtSalida.append("Susp: " + this.listEstVehiculos.get(2) + "\n");
         this.txtSalida.append("Total: " + this.listEstVehiculos.get(3) + "\n");
         this.txtSalida.append("Tope: " + this.listEstVehiculos.get(4) + "\n");
+    }
+
+    public void llenarCombobox(LinkedList productos) {
+        for (int i = 0; i < productos.size(); i++) {
+            jComboBox1.addItem(productos.get(i));
+        }
+    }
+
+    public void MAXcantidad(LinkedList max) {
+        lblMAX.setText("MAX " + max.get(jComboBox1.getSelectedIndex()) + " Cajas");
+    }
+
+    public void alerta(LinkedList max) {
+        if (txtCantidad.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta vacio, favor llenar");
+            txtCantidad.setText("");
+        } else if ((Integer.parseInt(txtCantidad.getText()) > (int) max.get(jComboBox1.getSelectedIndex()))) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad esta excedido la cantidad MAX es: " + (int) max.get(jComboBox1.getSelectedIndex()));
+            txtCantidad.setText("");
+        } else if ((Integer.parseInt(txtCantidad.getText()) < 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no permite numero negativos");
+            txtCantidad.setText("");
+        } else if ((Integer.parseInt(txtCantidad.getText()) == 0)) {
+            JOptionPane.showMessageDialog(null, "El campo cantidad no puede ser cero");
+            txtCantidad.setText("");
+        }
+    }
+
+    private int vehicDisponible() {
+        for (int i = 0; i < this.listHVehiculo.size(); i++) {
+            if (!this.listHVehiculo.get(i).getVehiculo().isOcupado()) {
+                this.listHVehiculo.get(i).getVehiculo().setOcupado(true);
+                return i;
+            }
+        }
+        return -1;
     }
 }

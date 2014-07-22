@@ -22,20 +22,22 @@ public class Vehiculo implements Runnable {
     private int tiempo;
     private Grafo.Grafo grafo;
     private Implementacion.Vehiculo vehiculo;
+    boolean bandera;
 
     public Vehiculo(javax.swing.JLabel carro, Nodo[] movimiento,
             javax.swing.JTextArea txtSalida, LinkedList<Integer> listEstVehiculos,
             Grafo.Grafo grafo, Implementacion.Vehiculo vehiculo) {
         this.carro = carro;
         this.movimiento = movimiento;
-        if (this.movimiento != null) {
+//        if (this.movimiento != null) {
             this.carro.setLocation(movimiento[0].getX() + 80, movimiento[0].getY());
-        }
+//        }
         this.txtSalida = txtSalida;
         this.listEstVehiculos = listEstVehiculos;
         this.tiempo = 0;
         this.grafo = grafo;
-        this.vehiculo = vehiculo;
+        this.vehiculo = vehiculo;        
+        this.bandera = true;
     }
 
     private int valABS(int x, int y) {
@@ -77,7 +79,10 @@ public class Vehiculo implements Runnable {
         int i = 1;
         while (i < this.getMovimiento().length) {
             try {
-//                System.out.println("i: "+i+" dir: "+getDireccion(i));
+//                if(bandera){
+//                    this.carro.setLocation(movimiento[0].getX() + 80, movimiento[0].getY());
+//                    bandera = false;
+//                }
                 switch (this.getDireccion(i)) {
                     //Se mueve hacia arriba
                     case 1:

@@ -26,13 +26,13 @@ public class Grafo {
     /*
      *Matriz de nodos
      */
-    Nodo[][] matrizNodos;
-    int tamano;
-    int[][] ruta;
-    int rutaCamion[][];
+    private Nodo[][] matrizNodos;
+    private int tamano;
+    private int[][] ruta;
+    private int rutaCamion[][];
 //    int[][] matrAdy;
-    double[][] mCostos;
-    double [][] mCostosCamion;
+    private double[][] mCostos;
+    private double [][] mCostosCamion;
 
     public Grafo(int tamano) {
         this.tamano = tamano;
@@ -49,9 +49,7 @@ public class Grafo {
     /**
      * @param matrizAD the matrizAD to set
      */
-    public void setMatrizAD(Arista[][] matrizAD) {
-        this.matrizAD = matrizAD;
-    }
+    
 
     /**
      * @return the listNodos
@@ -70,49 +68,50 @@ public class Grafo {
     private void cargar() {
         Conexion.Persistencia con = new Conexion.Persistencia();
 //        this.matrAdy = new int[this.tamano][this.tamano];
-        this.matrizAD = con.getMatrArista(this.tamano);
-        this.listNodos = con.getListNodos();
-        this.mCostos = new double[this.tamano][this.tamano];
-        this.mCostosCamion = new double[this.tamano][this.tamano];
-        this.ruta = new int[this.tamano][this.tamano];
-        this.rutaCamion = new int[this.tamano][this.tamano];
+        this.matrizAD = con.getMatrArista(this.getTamano());
+        this.setListNodos(con.getListNodos());
+        this.setmCostos(new double[this.getTamano()][this.getTamano()]);
+        this.setmCostosCamion(new double[this.getTamano()][this.getTamano()]);
+        this.setRuta(new int[this.getTamano()][this.getTamano()]);
+        this.setRutaCamion(new int[this.getTamano()][this.getTamano()]);
         this.cargaPosAristas();
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
                 if (i == j) {
-                    this.ruta[i][j] = 0;
-                    this.mCostos[i][j] = 0;
+                    this.getRuta()[i][j] = 0;
+                    this.getmCostos()[i][j] = 0;
                 } else {
-                    if (this.matrizAD[i][j] != null) {
-                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-                        this.ruta[i][j] = j;
+                    if (this.getMatrizAD()[i][j] != null) {
+                        this.getmCostos()[i][j] = this.getMatrizAD()[i][j].getPeso();
+                        this.getRuta()[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
-                        this.mCostos[i][j] = 1000000;
-                        this.ruta[i][j] = -1;
+                        this.getmCostos()[i][j] = 1000000;
+                        this.getRuta()[i][j] = -1;
                     }
                 }
             }
         }
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
                 if (i == j) {
-                    this.rutaCamion[i][j] = 0;
-                    this.mCostosCamion[i][j] = 0;
+                    this.getRutaCamion()[i][j] = 0;
+                    this.getmCostosCamion()[i][j] = 0;
                 } else {
-                    if (this.matrizAD[i][j] != null && this.matrizAD[i][j].isTipo()) {
-                        this.mCostosCamion[i][j] = this.matrizAD[i][j].getPeso();
-                        this.rutaCamion[i][j] = j;
+                    if (this.getMatrizAD()[i][j] != null && this.getMatrizAD()[i][j].isTipo()) {
+                        this.getmCostosCamion()[i][j] = this.getMatrizAD()[i][j].getPeso();
+                        this.getRutaCamion()[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
-                        this.mCostosCamion[i][j] = 1000000;
-                        this.rutaCamion[i][j] = -1;
+                        this.getmCostosCamion()[i][j] = 1000000;
+                        this.getRutaCamion()[i][j] = -1;
                     }
                 }
             }
         }
         this.floydwarshall();
         this.floydwarshallCamion();
+        con.setCAbastecimiento(this.getListNodos());
     }
 
     public Nodo[] getNodosRuta(int origen, int destino) {
@@ -124,20 +123,22 @@ public class Grafo {
         if (origen == destino) {
             return;
         }
-        ruta.add(this.ruta[origen][destino]);
-        getIntRuta(this.ruta[origen][destino], destino, ruta);
+        ruta.add(this.getRuta()[origen][destino]);
+        getIntRuta(this.getRuta()[origen][destino], destino, ruta);
     }
+    
+//    public void sustentacin
 
     public double[][] floydwarshall() {
-        int n = this.tamano;
-        double[][] cMA = new double[this.tamano][this.tamano];
-        copiarMA(cMA, mCostos);//realizamos una copia de la matriz de adyacencia
-        for (int k = 0; k < this.tamano; k++) {
-            for (int i = 0; i < this.tamano; i++) {
-                for (int j = 0; j < this.tamano; j++) {
+        int n = this.getTamano();
+        double[][] cMA = new double[this.getTamano()][this.getTamano()];
+        copiarMA(cMA, getmCostos());//realizamos una copia de la matriz de adyacencia
+        for (int k = 0; k < this.getTamano(); k++) {
+            for (int i = 0; i < this.getTamano(); i++) {
+                for (int j = 0; j < this.getTamano(); j++) {
                     if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
                         cMA[i][j] = cMA[i][k] + cMA[k][j];
-                        ruta[i][j] = ruta[i][k];
+                        getRuta()[i][j] = getRuta()[i][k];
                     }
                 }
             }
@@ -149,21 +150,21 @@ public class Grafo {
         if (origen == destino) {
             return;
         }
-        ruta.add(this.rutaCamion[origen][destino]);
-        getIntRutaCamion(this.rutaCamion[origen][destino], destino, ruta);
+        ruta.add(this.getRutaCamion()[origen][destino]);
+        getIntRutaCamion(this.getRutaCamion()[origen][destino], destino, ruta);
     }
     
     public double[][] floydwarshallCamion() {
-        int n = this.tamano;
-        double[][] cMA = new double[this.tamano][this.tamano];
-        copiarMA(cMA, mCostosCamion);//realizamos una copia de la matriz de adyacencia
-        for (int k = 0; k < this.tamano; k++) {
-            for (int i = 0; i < this.tamano; i++) {
-                for (int j = 0; j < this.tamano; j++) {
+        int n = this.getTamano();
+        double[][] cMA = new double[this.getTamano()][this.getTamano()];
+        copiarMA(cMA, getmCostosCamion());//realizamos una copia de la matriz de adyacencia
+        for (int k = 0; k < this.getTamano(); k++) {
+            for (int i = 0; i < this.getTamano(); i++) {
+                for (int j = 0; j < this.getTamano(); j++) {
 //                    double calc = cMA[i][k] + cMA[k][j];
                     if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
                         cMA[i][j] = cMA[i][k] + cMA[k][j];
-                        rutaCamion[i][j] = rutaCamion[i][k];
+                        getRutaCamion()[i][j] = getRutaCamion()[i][k];
                     }
                 }
             }
@@ -220,7 +221,7 @@ public class Grafo {
     private int minimo(boolean[] visto, int[][] disj) {
         int min = Integer.MAX_VALUE;
         int pos = 0;
-        for (int i = 0; i < this.tamano; i++) {
+        for (int i = 0; i < this.getTamano(); i++) {
             if (min > disj[0][i] && !visto[i]) {
                 min = disj[0][i];
                 pos = i;
@@ -230,17 +231,17 @@ public class Grafo {
     }
 
     private void llenaMatrizNodos() {
-        this.matrizNodos = new Nodo[10][11];
+        this.setMatrizNodos(new Nodo[10][11]);
         int index = 9;
-        this.matrizNodos[0][1] = this.listNodos[1];
-        this.matrizNodos[0][2] = this.listNodos[2];
-        this.matrizNodos[0][3] = this.listNodos[3];
-        this.matrizNodos[0][4] = this.listNodos[4];
-        this.matrizNodos[0][5] = this.listNodos[5];
-        this.matrizNodos[0][6] = this.listNodos[6];
+        this.getMatrizNodos()[0][1] = this.getListNodos()[1];
+        this.getMatrizNodos()[0][2] = this.getListNodos()[2];
+        this.getMatrizNodos()[0][3] = this.getListNodos()[3];
+        this.getMatrizNodos()[0][4] = this.getListNodos()[4];
+        this.getMatrizNodos()[0][5] = this.getListNodos()[5];
+        this.getMatrizNodos()[0][6] = this.getListNodos()[6];
         for (int i = 1; i < 10; i++) {
             for (int j = 0; j < 11; j++) {
-                this.matrizNodos[i][j] = this.listNodos[index];
+                this.getMatrizNodos()[i][j] = this.getListNodos()[index];
                 index++;
             }
         }
@@ -248,43 +249,43 @@ public class Grafo {
     }
 
     public void cargaPosAristas() {
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
-                if (matrizAD[i][j] != null) {
-                    switch (this.getDireccion(this.listNodos[i].getX(), this.listNodos[i].getY(),
-                            this.listNodos[j].getX(), this.listNodos[j].getY())) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
+                if (getMatrizAD()[i][j] != null) {
+                    switch (this.getDireccion(this.getListNodos()[i].getX(), this.getListNodos()[i].getY(),
+                            this.getListNodos()[j].getX(), this.getListNodos()[j].getY())) {
                         case 1: {
-                            matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-                            matrizAD[i][j].setPosYO(this.listNodos[i].getY() - 10);
-                            matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() + 32);
+                            getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX());
+                            getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY() - 10);
+                            getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX());
+                            getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY() + 32);
                         }
                         break;
                         case 2: {
-                            matrizAD[i][j].setPosXO(this.listNodos[i].getX() + 32);
-                            matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-                            matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 10);
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                            getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX() + 32);
+                            getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY());
+                            getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX() - 10);
+                            getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY());
                         }
                         break;
                         case 3: {
-                            matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-                            matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 37);
-                            matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 15);
+                            getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX());
+                            getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY() + 37);
+                            getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX());
+                            getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY() - 15);
 
                         }
                         break;
                         case 4: {
-                            matrizAD[i][j].setPosXO(this.listNodos[i].getX() - 7);
-                            matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-                            matrizAD[i][j].setPosXD(this.listNodos[j].getX() + 32);
-                            matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                            getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX() - 7);
+                            getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY());
+                            getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX() + 32);
+                            getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY());
 
                         }
                         break;
                     }
-                    matrizAD[i][j].crearArea();
+                    getMatrizAD()[i][j].crearArea();
                 }
             }
         }
@@ -299,41 +300,41 @@ public class Grafo {
     }
 
     public void cargaPosUnaArista(int i, int j) {
-        if (matrizAD[i][j] != null) {
-            switch (this.getDireccion(this.listNodos[i].getX(), this.listNodos[i].getY(),
-                    this.listNodos[j].getX(), this.listNodos[j].getY())) {
+        if (getMatrizAD()[i][j] != null) {
+            switch (this.getDireccion(this.getListNodos()[i].getX(), this.getListNodos()[i].getY(),
+                    this.getListNodos()[j].getX(), this.getListNodos()[j].getY())) {
                 case 1: {
-                    matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-                    matrizAD[i][j].setPosYO(this.listNodos[i].getY() - 10);
-                    matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                    matrizAD[i][j].setPosYD(this.listNodos[j].getY() + 32);
+                    getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX());
+                    getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY() - 10);
+                    getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX());
+                    getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY() + 32);
                 }
                 break;
                 case 2: {
-                    matrizAD[i][j].setPosXO(this.listNodos[i].getX() + 32);
-                    matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-                    matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 10);
-                    matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                    getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX() + 32);
+                    getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY());
+                    getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX() - 10);
+                    getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY());
                 }
                 break;
                 case 3: {
-                    matrizAD[i][j].setPosXO(this.listNodos[i].getX());
-                    matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 37);
-                    matrizAD[i][j].setPosXD(this.listNodos[j].getX());
-                    matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 15);
+                    getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX());
+                    getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY() + 37);
+                    getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX());
+                    getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY() - 15);
 
                 }
                 break;
                 case 4: {
-                    matrizAD[i][j].setPosXO(this.listNodos[i].getX() - 7);
-                    matrizAD[i][j].setPosYO(this.listNodos[i].getY());
-                    matrizAD[i][j].setPosXD(this.listNodos[j].getX() + 32);
-                    matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                    getMatrizAD()[i][j].setPosXO(this.getListNodos()[i].getX() - 7);
+                    getMatrizAD()[i][j].setPosYO(this.getListNodos()[i].getY());
+                    getMatrizAD()[i][j].setPosXD(this.getListNodos()[j].getX() + 32);
+                    getMatrizAD()[i][j].setPosYD(this.getListNodos()[j].getY());
 
                 }
                 break;
             }
-            matrizAD[i][j].crearArea();
+            getMatrizAD()[i][j].crearArea();
         }
     }
 
@@ -360,37 +361,37 @@ public class Grafo {
     }
 
     public void eventoAristaCamion() {
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
                 if (i == j) {
-                    this.ruta[i][j] = 0;
-                    this.mCostos[i][j] = 0;
+                    this.getRuta()[i][j] = 0;
+                    this.getmCostos()[i][j] = 0;
                 } else {
-                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
-                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-                        this.ruta[i][j] = j;
+                    if (this.getMatrizAD()[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
+                        this.getmCostos()[i][j] = this.getMatrizAD()[i][j].getPeso();
+                        this.getRuta()[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
-                        this.mCostos[i][j] = 1000000;
-                        this.ruta[i][j] = -1;
+                        this.getmCostos()[i][j] = 1000000;
+                        this.getRuta()[i][j] = -1;
                     }
                 }
             }
         }
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
                 if (i == j) {
-                    this.rutaCamion[i][j] = 0;
-                    this.mCostosCamion[i][j] = 0;
+                    this.getRutaCamion()[i][j] = 0;
+                    this.getmCostosCamion()[i][j] = 0;
                 } else {
-                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()
-                            && this.matrizAD[i][j].isTipo()) {
-                        this.mCostosCamion[i][j] = this.matrizAD[i][j].getPeso();
-                        this.rutaCamion[i][j] = j;
+                    if (this.getMatrizAD()[i][j] != null && !this.matrizAD[i][j].isObstruida()
+                            && this.getMatrizAD()[i][j].isTipo()) {
+                        this.getmCostosCamion()[i][j] = this.getMatrizAD()[i][j].getPeso();
+                        this.getRutaCamion()[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
-                        this.mCostosCamion[i][j] = 1000000;
-                        this.rutaCamion[i][j] = -1;
+                        this.getmCostosCamion()[i][j] = 1000000;
+                        this.getRutaCamion()[i][j] = -1;
                     }
                 }
             }
@@ -400,23 +401,73 @@ public class Grafo {
     }
     
     public void eventoArista() {
-        for (int i = 0; i < this.tamano; i++) {
-            for (int j = 0; j < this.tamano; j++) {
+        for (int i = 0; i < this.getTamano(); i++) {
+            for (int j = 0; j < this.getTamano(); j++) {
                 if (i == j) {
-                    this.ruta[i][j] = 0;
-                    this.mCostos[i][j] = 0;
+                    this.getRuta()[i][j] = 0;
+                    this.getmCostos()[i][j] = 0;
                 } else {
-                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
-                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-                        this.ruta[i][j] = j;
+                    if (this.getMatrizAD()[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
+                        this.getmCostos()[i][j] = this.getMatrizAD()[i][j].getPeso();
+                        this.getRuta()[i][j] = j;
 //                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
                     } else {
-                        this.mCostos[i][j] = 1000000;
-                        this.ruta[i][j] = -1;
+                        this.getmCostos()[i][j] = 1000000;
+                        this.getRuta()[i][j] = -1;
                     }
                 }
             }
         }
         this.floydwarshall();
     }
+
+        public Nodo[][] getMatrizNodos() {
+        return matrizNodos;
+    }
+
+    public void setMatrizNodos(Nodo[][] matrizNodos) {
+        this.matrizNodos = matrizNodos;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public int[][] getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(int[][] ruta) {
+        this.ruta = ruta;
+    }
+
+    public int[][] getRutaCamion() {
+        return rutaCamion;
+    }
+
+    public void setRutaCamion(int[][] rutaCamion) {
+        this.rutaCamion = rutaCamion;
+    }
+
+    public double[][] getmCostos() {
+        return mCostos;
+    }
+
+    public void setmCostos(double[][] mCostos) {
+        this.mCostos = mCostos;
+    }
+
+    public double[][] getmCostosCamion() {
+        return mCostosCamion;
+    }
+
+    public void setmCostosCamion(double[][] mCostosCamion) {
+        this.mCostosCamion = mCostosCamion;
+    }
+    
+    
 }

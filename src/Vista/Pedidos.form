@@ -54,7 +54,7 @@
                               </Group>
                           </Group>
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="355" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="0" min="-2" pref="355" max="-2" attributes="0"/>
+                          <Component id="btnAceptar" alignment="0" min="-2" pref="355" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -90,7 +90,7 @@
               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               <Component id="lblFecha" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="150" max="-2" attributes="0"/>
               <EmptySpace pref="42" max="32767" attributes="0"/>
@@ -142,7 +142,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnAceptar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Calibri" size="36" style="0"/>
@@ -150,7 +150,7 @@
         <Property name="text" type="java.lang.String" value="Aceptar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAceptarActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

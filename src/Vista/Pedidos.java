@@ -6,7 +6,10 @@
 package Vista;
 
 import Conexion.Persistencia;
+import Grafo.Nodo;
+import Hilos.Vehiculo;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
@@ -19,8 +22,13 @@ public class Pedidos extends javax.swing.JFrame {
     Persistencia persistencia;
     int aux;
     int temp;
-    int idPedido;
+    int idPedidos;//Id de la Tabla que contiene las referencias entre pedidos y pedido
+    int idPedido;//Id de la tabla del pedido de un determinado producto
     int idNodo;
+    LinkedList<Hilos.Vehiculo> listHVehiculo;
+    Grafo.Grafo grafo;
+    int[][] HMpedidos;
+    LinkedList<Integer> listEstVehiculos;
 
     /**
      * Creates new form Pedidos
@@ -28,11 +36,9 @@ public class Pedidos extends javax.swing.JFrame {
     public Pedidos() {
         initComponents();
         persistencia = new Persistencia();
-        llenarCombobox(persistencia.cargarProductos());
         aux = 0;
         temp = 0;
-
-//        cargarCombo();
+        int idPedidos;
     }
 
     public void llenarCombobox(LinkedList productos) {
@@ -47,21 +53,20 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     public void alerta(LinkedList max) {
-        temp = (int) max.get(aux);
-        if (txtcantidad.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "El campo cantidad esta vacio, favor llenar");
-            txtcantidad.setText("");
-        } else if ((Integer.parseInt(txtcantidad.getText()) > temp)) {
-            JOptionPane.showMessageDialog(null, "El campo cantidad esta excedido la cantidad MAX es: " + temp);
-            txtcantidad.setText("");
-        } else if ((Integer.parseInt(txtcantidad.getText()) < 0)) {
-            JOptionPane.showMessageDialog(null, "El campo cantidad no permite numero negativos");
-            txtcantidad.setText("");
-        }else if ((Integer.parseInt(txtcantidad.getText()) == 0)) {
-            JOptionPane.showMessageDialog(null, "El campo cantidad no puede ser cero");
-            txtcantidad.setText("");
-        }
-        
+//        temp = (int) max.get(aux);
+//        if (txtcantidad.getText().equals("")) {
+//            JOptionPane.showMessageDialog(null, "El campo cantidad esta vacio, favor llenar");
+//            txtcantidad.setText("");
+//        } else if ((Integer.parseInt(txtcantidad.getText()) > temp)) {
+//            JOptionPane.showMessageDialog(null, "El campo cantidad esta excedido la cantidad MAX es: " + temp);
+//            txtcantidad.setText("");
+//        } else if ((Integer.parseInt(txtcantidad.getText()) < 0)) {
+//            JOptionPane.showMessageDialog(null, "El campo cantidad no permite numero negativos");
+//            txtcantidad.setText("");
+//        } else if ((Integer.parseInt(txtcantidad.getText()) == 0)) {
+//            JOptionPane.showMessageDialog(null, "El campo cantidad no puede ser cero");
+//            txtcantidad.setText("");
+//        }
     }
 
 //    public void cargarCombo() {
@@ -99,7 +104,7 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox();
@@ -130,11 +135,11 @@ public class Pedidos extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
-        jButton2.setText("Aceptar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
             }
         });
 
@@ -188,7 +193,7 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addComponent(lblmax)
                                     .addComponent(lblFecha)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -215,7 +220,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addComponent(lblFecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnAceptar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
@@ -226,27 +231,120 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         MAXcantidad(persistencia.cargarCantidad());
-
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         alerta(persistencia.cargarCantidad());
         Conexion.Persistencia con = new Conexion.Persistencia();
-        int idPedidos = con.getIDPedidoMapa();
-        int idPedido = con.getIDPedido();
-//        con.insert
-    }//GEN-LAST:event_jButton2ActionPerformed
+        this.idPedido = con.getIDPedido();
+        int vehiculo = this.vehicDisponible();
+        if (vehiculo >= 0) {
+            con.insertPedidoMapa(idPedidos, idPedido);
+            this.enviarPedido(vehiculo);
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void enviarPedido(int vehiculo) {
+        int aux = 4;
+        LinkedList<Integer> ruta = new LinkedList<>();
+//        int origen = 1;
+//        int destino = 25;
+        this.grafo.getIntRuta(vehiculo, aux, ruta);
+        if (!ruta.isEmpty()) {
+            ruta.addFirst(vehiculo);
+        }
+        Grafo.Nodo[] trav = new Nodo[ruta.size()];
+        for (int i = 0; i < ruta.size(); i++) {
+            trav[i] = this.grafo.getListNodos()[ruta.get(i)];
+        }
+        System.out.println("Tam ruta: " + ruta.size());
+        for (Integer n : ruta) {
+            System.out.print(", " + n);
+        }
+        System.out.println("");
+        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
+            System.out.println("antes de...");
+            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+//            this.setVehicTxtSalida();
+            Thread hilo = new Thread(new Hilos.Vehiculo(
+                    this.listHVehiculo.get(vehiculo).getCarro(), trav,
+                    null, this.listEstVehiculos, this.grafo,
+                    new Implementacion.Vehiculo(40, 22, false)));
+            hilo.start();
+        }
+////int aux = (int)Math.random()*7;
+//        if (this.listHVehiculo.get(vehiculo).getVehiculo().isTipo()) {
+//            LinkedList<Integer> ruta = new LinkedList<>();
+//            this.grafo.getIntRutaCamion(this.idNodo,
+//                    aux, ruta);
+//            if (!ruta.isEmpty()) {
+//                ruta.addFirst(this.idNodo);
+//                Grafo.Nodo[] nodo = new Nodo[ruta.size()];
+//                this.listHVehiculo.get(vehiculo).setMovimiento(nodo);
+//                for (int j = 0; j < ruta.size(); j++) {
+//                    nodo[j] = this.grafo.getListNodos()[ruta.get(j)];
+//                }
+//                this.listHVehiculo.get(vehiculo).setMovimiento(nodo);
+//                System.out.println("antes de...");
+////                this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+////                this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+////                this.setVehicTxtSalida();
+//                Thread hilo = new Thread(this.listHVehiculo.get(vehiculo));
+//                hilo.start();
+//            }
+//        } else {
+//            LinkedList<Integer> ruta = new LinkedList<>();
+//            this.grafo.getIntRuta(this.idNodo,
+//                    aux, ruta);
+//            if (!ruta.isEmpty()) {
+//                ruta.addFirst(this.idNodo);
+//                Grafo.Nodo[] nodo = new Nodo[ruta.size()];
+//                this.listHVehiculo.get(vehiculo).setMovimiento(nodo);
+//                for (int j = 0; j < ruta.size(); j++) {
+//                    nodo[j] = this.grafo.getListNodos()[ruta.get(j)];
+//                }
+//                this.listHVehiculo.get(vehiculo).setMovimiento(nodo);
+//                System.out.println("antes de...");
+////                this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+////                this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+////                this.setVehicTxtSalida();
+//                Thread hilo = new Thread(this.listHVehiculo.get(vehiculo));
+//                hilo.start();
+//            }
+//        }
+    }
+
+    private int vehicDisponible() {
+        for (int i = 0; i < this.listHVehiculo.size(); i++) {
+            if (!this.listHVehiculo.get(i).getVehiculo().isOcupado()) {
+                this.listHVehiculo.get(i).getVehiculo().setOcupado(true);
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void setDatos(int idInsersion, int idNodo){
+    public void setDatos(int idPedidos, int idNodo) {
         Date fecha = new Date();
-        this.lblFecha.setText(fecha.toString()+" (dd/mm/aa)");
-        this.idPedido = idInsersion;
+        this.lblFecha.setText(fecha.toString() + " (dd/mm/aa)");
         this.idNodo = idNodo;
+        this.idPedidos = idPedidos;
+        this.llenarCombobox(persistencia.cargarProductos());
+
     }
+
+    public void cargaDatosInicial(LinkedList<Hilos.Vehiculo> listHVehiculo,
+            Grafo.Grafo grafo, int[][] HMpedidos, LinkedList<Integer> listEstVehiculos) {
+        this.listHVehiculo = listHVehiculo;
+        this.grafo = grafo;
+        this.HMpedidos = HMpedidos;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -285,8 +383,8 @@ public class Pedidos extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
