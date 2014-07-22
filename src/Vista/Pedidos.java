@@ -6,17 +6,8 @@
 package Vista;
 
 import Conexion.Persistencia;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.LinkedList;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,6 +19,8 @@ public class Pedidos extends javax.swing.JFrame {
     Persistencia persistencia;
     int aux;
     int temp;
+    int idPedido;
+    int idNodo;
 
     /**
      * Creates new form Pedidos
@@ -238,16 +231,21 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         alerta(persistencia.cargarCantidad());
-
+        Conexion.Persistencia con = new Conexion.Persistencia();
+        int idPedidos = con.getIDPedidoMapa();
+        int idPedido = con.getIDPedido();
+//        con.insert
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void setFechaActual(){
+    public void setDatos(int idInsersion, int idNodo){
         Date fecha = new Date();
         this.lblFecha.setText(fecha.toString()+" (dd/mm/aa)");
+        this.idPedido = idInsersion;
+        this.idNodo = idNodo;
     }
     /**
      * @param args the command line arguments

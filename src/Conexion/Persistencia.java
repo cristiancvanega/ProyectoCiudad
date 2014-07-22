@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -218,5 +219,78 @@ public class Persistencia {
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void insertPVEntrega(int id, int idVehiculo){
+        System.out.println("UPDATE pedido SET pvenviado="+idVehiculo+" WHERE id ="+id);
+        try {
+            statement = this.connection.createStatement();
+            statement.executeQuery("UPDATE pedido SET pvenviado="+idVehiculo+" WHERE id ="+id);
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+     public void setFEntregaPedido(String fechaEntrega, int id) {
+         System.out.println("UPDATE pedido SET fentrega=to_date('dd/mm/aa'"
+                    +fechaEntrega+") WHERE id = "+id);
+        try {
+            statement = this.connection.createStatement();
+            statement.executeQuery("UPDATE pedido SET fentrega=to_date('dd/mm/aa'"
+                    +fechaEntrega+") WHERE id = "+id);
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertPedido(int id, String fsolicitud, int pvenviado, int cadestino) {
+        System.out.println("INSERT INTO pedido(id, fsolicitud, pvenviado,"
+                    + " cadestino) VALUES ("+id+", to_date('dd/mm/aa'"+fsolicitud.toString()+"),"
+                    +pvenviado+" , "+cadestino+")");
+        try {
+            statement = this.connection.createStatement();
+            statement.executeQuery("INSERT INTO pedido(id, fsolicitud, pvenviado,"
+                    + " cadestino) VALUES ("+id+", to_date('dd/mm/aa'"+fsolicitud+"),"
+                    +pvenviado+" , "+cadestino+")");
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void insertPedidoMapa(int id, int idPedido) {
+        try {
+            statement = this.connection.createStatement();
+            statement.executeQuery("INSERT INTO pedidos(id, idpedido) VALUES (" + id + ", " + idPedido + ")");
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getIDPedidoMapa() {
+        int res = 0;
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT max(id) FROM pedidos");
+            while (rs.next()) {
+                res = rs.getInt("max") + 1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
+    }
+
+    public int getIDPedido() {
+        int res = 0;
+        try {
+            statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT max(id) FROM pedido");
+            while (rs.next()) {
+                res = rs.getInt("max") + 1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
     }
 }

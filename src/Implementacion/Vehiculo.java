@@ -11,7 +11,39 @@ package Implementacion;
  * @author PC
  */
 public class Vehiculo {
-    int capacidad;
-    String placa;
-    String tipo;
+    private int capacidad;
+    private int placa;//id que va desde el 0 hasta el 19
+    private boolean tipo;//true si es camión, false si es furgón
+
+    public Vehiculo(int capacidad, int placa, boolean tipo) {
+        this.capacidad = capacidad;
+        this.placa = placa;
+        this.tipo = tipo;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public int getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(int placa) {
+        this.placa = placa;
+    }
+
+    public boolean isTipo() {
+        return tipo;
+    }
+
+    public void setTipo(boolean tipo) {
+        this.tipo = tipo;
+    }
+    
+    
 }

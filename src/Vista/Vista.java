@@ -2,8 +2,10 @@ package Vista;
 
 import Grafo.Arista;
 import Grafo.Nodo;
+import Hilos.Vehiculo;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Vista extends javax.swing.JFrame {
@@ -22,6 +24,7 @@ public class Vista extends javax.swing.JFrame {
      int vehiculosTope;//Cantidad máxima de vehículos
      */
     LinkedList<Integer> listEstVehiculos;//
+    LinkedList<Hilos.Vehiculo> listHVehiculo;
 
     public Vista() {
         initComponents();
@@ -341,9 +344,9 @@ public class Vista extends javax.swing.JFrame {
                                 arista[i][j].setObstruida(true);
                             }
                             System.out.println("arista encontrada... i: " + i + ", j: " + j);
-                            if(arista[i][j].isTipo()){
+                            if (arista[i][j].isTipo()) {
                                 this.grafo.eventoAristaCamion();
-                            }else{
+                            } else {
                                 this.grafo.eventoArista();
                             }
                             bandera = false;
@@ -407,10 +410,12 @@ public class Vista extends javax.swing.JFrame {
         } else if (this.chbxRPedido.isSelected()) {
             while (bandera && indice < this.tamano) {
                 if (this.grafo.getListNodos()[indice] != null) {
+                    Conexion.Persistencia con = new Conexion.Persistencia();
                     if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())
                             && !this.listNoeditables.contains(this.grafo.getListNodos()[indice].getId())
                             && this.grafo.getListNodos()[indice].isHabilidato()) {
-                        this.pedido.setFechaActual();//Ponemos la hora actual del sistema
+                        this.pedido.setDatos(con.getIDPedido(),
+                                this.grafo.getListNodos()[indice].getId());//Seteamos algunos datos necesarios
                         this.pedido.setVisible(true);
                         bandera = false;
                     }
@@ -500,15 +505,10 @@ public class Vista extends javax.swing.JFrame {
     private void btnPrutaPLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrutaPLabelActionPerformed
         int origen = Integer.parseInt(this.txtRuta.getText().split(",")[0]);
         int destino = Integer.parseInt(this.txtRuta.getText().split(",")[1]);
-        this.jLabel2.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
-//lbl.setIcon(new java.net.Url("imagenes/icono.png);
         LinkedList<Integer> ruta = new LinkedList<>();
-//        int origen = 1;
-//        int destino = 25;
         this.grafo.getIntRutaCamion(origen, destino, ruta);
         if (!ruta.isEmpty()) {
             ruta.addFirst(origen);
-//            ruta.add(destino);
         }
         Grafo.Nodo[] trav = new Nodo[ruta.size()];
         for (int i = 0; i < ruta.size(); i++) {
@@ -525,7 +525,8 @@ public class Vista extends javax.swing.JFrame {
             this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
             this.setVehicTxtSalida();
             Thread hilo = new Thread(new Hilos.Vehiculo(jLabel2, trav,
-                    this.txtSalida, this.listEstVehiculos, this.grafo, true));
+                    this.txtSalida, this.listEstVehiculos, this.grafo,
+                    new Implementacion.Vehiculo(40, 21, true)));
             hilo.start();
         }
         System.out.println("despues de...");
@@ -557,7 +558,8 @@ public class Vista extends javax.swing.JFrame {
             this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
             this.setVehicTxtSalida();
             Thread hilo = new Thread(new Hilos.Vehiculo(jLabel1, trav,
-                    this.txtSalida, this.listEstVehiculos, this.grafo, false));
+                    this.txtSalida, this.listEstVehiculos, this.grafo,
+                    new Implementacion.Vehiculo(40, 22, false)));
             hilo.start();
         }
     }//GEN-LAST:event_btnPRParametrosActionPerformed
@@ -656,10 +658,107 @@ public class Vista extends javax.swing.JFrame {
         this.listEstVehiculos.add(10);
         this.listEstVehiculos.add(0);
         this.listEstVehiculos.add(10);
-        this.listEstVehiculos.add(20);
+        this.listEstVehiculos.add(16);
         this.setVehicTxtSalida();
 
-//        this.chbxIArista.setVisible(false);
+        /*Llenamos la lista de vehículos seteándole además un objeto de tipo carro y otro de 
+         *tipo Implementacion.Vehículo
+         */
+        this.jLabel1.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel2.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel3.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel4.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel5.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+
+        this.jLabel6.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel7.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel8.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel9.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel10.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+
+        this.jLabel11.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel12.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel13.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+        this.jLabel14.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+        this.jLabel15.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+
+        this.jLabel16.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel17.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel18.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+//        this.jLabel19.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//        this.jLabel20.setIcon(new ImageIcon(getClass().getResource("../Recursos/carro.jpg")));
+
+        //Seteamos las posiciones de los labels para que no se descuadre la vista
+//        this.jLabel1.setLocation(50, 700);
+//        this.jLabel2.setLocation(100, 701);
+//        this.jLabel3.setLocation(150, 702);
+//        this.jLabel4.setLocation(200, 703);
+//        this.jLabel5.setLocation(250, 704);
+//
+//        this.jLabel6.setLocation(300, 705);
+//        this.jLabel7.setLocation(350, 706);
+//        this.jLabel8.setLocation(400, 707);
+//        this.jLabel9.setLocation(450, 708);
+//        this.jLabel10.setLocation(500, 709);
+//
+//        this.jLabel11.setLocation(550, 710);
+//        this.jLabel12.setLocation(600, 711);
+//        this.jLabel13.setLocation(650, 712);
+//        this.jLabel14.setLocation(700, 713);
+//        this.jLabel15.setLocation(750, 714);
+//
+//        this.jLabel16.setLocation(800, 715);
+//        this.jLabel17.setLocation(850, 716);
+//        this.jLabel18.setLocation(900, 717);
+//        this.jLabel19.setLocation(950, 718);
+//        this.jLabel20.setLocation(1000, 719);
+        
+        //Adicionamos a la lista 20 objetos de tipo Hilos.Vehiculo
+        this.listHVehiculo = new LinkedList<>();
+        this.listHVehiculo.add(new Vehiculo(jLabel1, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 1, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel2, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 2, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel3, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 3, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel4, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 4, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel5, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 5, true)));
+        
+        this.listHVehiculo.add(new Vehiculo(jLabel6, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 6, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel7, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 7, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel8, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 8, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel9, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 9, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel10, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 10, false)));
+
+        
+        this.listHVehiculo.add(new Vehiculo(jLabel11, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 11, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel12, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 12, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel13, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 13, true)));
+        this.listHVehiculo.add(new Vehiculo(jLabel14, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 14, false)));
+        this.listHVehiculo.add(new Vehiculo(jLabel15, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 15, true)));
+        
+        this.listHVehiculo.add(new Vehiculo(jLabel16, null, this.txtSalida,
+                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 16, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel17, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 17, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel18, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 18, false)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel19, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(80, 19, true)));
+//        this.listHVehiculo.add(new Vehiculo(jLabel20, null, this.txtSalida,
+//                listEstVehiculos, grafo, new Implementacion.Vehiculo(40, 20, false)));
     }
 
     private void llenaNoEditables() {
