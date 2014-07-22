@@ -16,7 +16,7 @@ public class Vehiculo implements Runnable {
 
     javax.swing.JLabel carro;
 //    Grafo.Grafo grafo;
-    Grafo.Nodo[] movimiento;
+    Grafo.Nodo[] movimiento;// Arreglo de nodos que contiene la ruta a seguir.
 
     public Vehiculo(javax.swing.JLabel carro, Nodo[] movimiento) {
         this.carro = carro;

@@ -3,9 +3,6 @@ package Vista;
 import Grafo.Arista;
 import Grafo.Nodo;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JLabel;
 
 public class Vista extends javax.swing.JFrame {
 
@@ -34,6 +31,7 @@ public class Vista extends javax.swing.JFrame {
         txtRuta = new javax.swing.JTextField();
         chbxHabDesA = new javax.swing.JCheckBox();
         chbxRPedido = new javax.swing.JCheckBox();
+        chbxIArista = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("La Ciudad Del 5");
@@ -103,6 +101,13 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        chbxIArista.setText("Inv. arist");
+        chbxIArista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbxIAristaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +123,8 @@ public class Vista extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chbxHabDesA)
-                    .addComponent(chbxRPedido))
+                    .addComponent(chbxRPedido)
+                    .addComponent(chbxIArista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
                 .addContainerGap())
@@ -139,7 +145,9 @@ public class Vista extends javax.swing.JFrame {
                         .addComponent(chbxHabDesA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chbxRPedido)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 320, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chbxIArista)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
                         .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
                         .addComponent(jButton2)
@@ -228,7 +236,37 @@ public class Vista extends javax.swing.JFrame {
 //                }
 //                indice++;
 //            }
-            System.out.println("Hab/des arista");
+//            System.out.println("Hab/des arista");
+        }else if(this.chbxIArista.isSelected()){
+            Grafo.Arista[][] arista = this.grafo.getMatrizAD();
+            for (int i = 0; i < this.tamano; i++) {
+                if(!bandera)
+                        break;
+                for (int j = 0; j < this.tamano; j++) {
+                    if(!bandera)
+                        break;
+                    if (arista[i][j] != null) {
+                        if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
+                            if(arista[j][i] == null){
+                                    arista[j][i] = new Arista(arista[i][j].getDistancia(), 
+                                            arista[i][j].getVelocidad(), arista[i][j].getPeso(), 
+                                            true, 110);
+                                }else{
+                                    arista[j][i].setCarriles(arista[i][j].getCarriles()+1);
+                                }
+                            if(arista[i][j].getCarriles() > 1){
+                                arista[i][j].setCarriles(arista[i][j].getCarriles()-1);
+                            }else{
+                                arista[i][j] = null;
+                            }
+                            System.out.println("arista encontrada... i: " + i + ", j: " + j);
+                            this.grafo.eventoArista();
+                            this.grafo.cargaPosUnaArista(j, i);
+                            bandera = false;
+                        }
+                    }
+                }
+            }
         }else if (this.chbxRPedido.isSelected()) {
             while(bandera && indice < this.tamano){
                 if (this.grafo.getListNodos()[indice] != null) {
@@ -307,6 +345,7 @@ public class Vista extends javax.swing.JFrame {
             this.chbxCrearElimCD.setSelected(false);
             this.chbxHabDesA.setSelected(false);
             this.chbxRPedido.setSelected(false);
+            this.chbxIArista.setSelected(false);
         }
 
     }//GEN-LAST:event_chbxHabDesNActionPerformed
@@ -316,6 +355,7 @@ public class Vista extends javax.swing.JFrame {
             this.chbxHabDesN.setSelected(false);
             this.chbxHabDesA.setSelected(false);
             this.chbxRPedido.setSelected(false);
+            this.chbxIArista.setSelected(false);
         }
     }//GEN-LAST:event_chbxCrearElimCDActionPerformed
 
@@ -375,6 +415,7 @@ public class Vista extends javax.swing.JFrame {
             this.chbxHabDesN.setSelected(false);
             this.chbxCrearElimCD.setSelected(false);
             this.chbxRPedido.setSelected(false);
+            this.chbxIArista.setSelected(false);
         }
     }//GEN-LAST:event_chbxHabDesAActionPerformed
 
@@ -383,8 +424,18 @@ public class Vista extends javax.swing.JFrame {
             this.chbxHabDesN.setSelected(false);
             this.chbxCrearElimCD.setSelected(false);
             this.chbxHabDesA.setSelected(false);
+            this.chbxIArista.setSelected(false);
         }
     }//GEN-LAST:event_chbxRPedidoActionPerformed
+
+    private void chbxIAristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxIAristaActionPerformed
+        if(this.chbxIArista.isSelected()){
+            this.chbxRPedido.setSelected(false);
+            this.chbxHabDesN.setSelected(false);
+            this.chbxCrearElimCD.setSelected(false);
+            this.chbxHabDesA.setSelected(false);
+        }
+    }//GEN-LAST:event_chbxIAristaActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -401,6 +452,7 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JCheckBox chbxCrearElimCD;
     private javax.swing.JCheckBox chbxHabDesA;
     private javax.swing.JCheckBox chbxHabDesN;
+    private javax.swing.JCheckBox chbxIArista;
     private javax.swing.JCheckBox chbxRPedido;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -416,6 +468,7 @@ public class Vista extends javax.swing.JFrame {
         ((Panel) panelFondo).setGrafo(this.grafo);
         this.llenaNoEditables();
         this.pedido = new Pedidos();
+        this.chbxIArista.setVisible(false);
     }
 
     private void llenaNoEditables() {

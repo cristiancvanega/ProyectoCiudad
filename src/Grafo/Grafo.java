@@ -100,7 +100,7 @@ public class Grafo {
 
     public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta) {
 //        if (this.ruta[origen][destino] == -1) {
-        if (origen==destino) {
+        if (origen == destino) {
             return;
         }
 //        System.out.println("origen: " + origen + ", destino: " + destino);
@@ -210,7 +210,7 @@ public class Grafo {
         System.out.println("llenaMatrizNodos(): " + index);
     }
 
-    private void cargaPosAristas() {
+    public void cargaPosAristas() {
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
                 if (matrizAD[i][j] != null) {
@@ -261,6 +261,45 @@ public class Grafo {
         }
     }
 
+    public void cargaPosUnaArista(int i, int j) {
+        if (matrizAD[i][j] != null) {
+            switch (this.getDireccion(this.listNodos[i].getX(), this.listNodos[i].getY(),
+                    this.listNodos[j].getX(), this.listNodos[j].getY())) {
+                case 1: {
+                    matrizAD[i][j].setPosXO(this.listNodos[i].getX());
+                    matrizAD[i][j].setPosYO(this.listNodos[i].getY() - 10);
+                    matrizAD[i][j].setPosXD(this.listNodos[j].getX());
+                    matrizAD[i][j].setPosYD(this.listNodos[j].getY() + 32);
+                }
+                break;
+                case 2: {
+                    matrizAD[i][j].setPosXO(this.listNodos[i].getX() + 32);
+                    matrizAD[i][j].setPosYO(this.listNodos[i].getY());
+                    matrizAD[i][j].setPosXD(this.listNodos[j].getX() - 10);
+                    matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+                }
+                break;
+                case 3: {
+                    matrizAD[i][j].setPosXO(this.listNodos[i].getX());
+                    matrizAD[i][j].setPosYO(this.listNodos[i].getY() + 37);
+                    matrizAD[i][j].setPosXD(this.listNodos[j].getX());
+                    matrizAD[i][j].setPosYD(this.listNodos[j].getY() - 15);
+
+                }
+                break;
+                case 4: {
+                    matrizAD[i][j].setPosXO(this.listNodos[i].getX() - 7);
+                    matrizAD[i][j].setPosYO(this.listNodos[i].getY());
+                    matrizAD[i][j].setPosXD(this.listNodos[j].getX() + 32);
+                    matrizAD[i][j].setPosYD(this.listNodos[j].getY());
+
+                }
+                break;
+            }
+            matrizAD[i][j].crearArea();
+        }
+    }
+
     /*
      Calcula la dirección en que debe ir el carro
      */
@@ -301,7 +340,7 @@ public class Grafo {
 //            }
 //        }
 //        this.floydwarshall();
-        
+
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
                 if (i == j) {
@@ -320,7 +359,6 @@ public class Grafo {
             }
         }
         this.floydwarshall();
-        
-        
+
     }
 }
