@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedList;
 
 import java.util.logging.Level;
@@ -110,8 +111,9 @@ public class Pedidos extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox();
         txtcantidad = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtFechaEntrega = new javax.swing.JTextField();
         lblmax = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,11 +160,13 @@ public class Pedidos extends javax.swing.JFrame {
 
         txtcantidad.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
+        txtFechaEntrega.setFont(new java.awt.Font("Arabic Typesetting", 0, 24)); // NOI18N
 
         lblmax.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblmax.setForeground(new java.awt.Color(255, 0, 0));
         lblmax.setText("MAX xxxx Cajas");
+
+        lblFecha.setText("jLabel5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,8 +191,9 @@ public class Pedidos extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblmax)))
+                                    .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblmax)
+                                    .addComponent(lblFecha)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(130, Short.MAX_VALUE))
@@ -212,13 +217,15 @@ public class Pedidos extends javax.swing.JFrame {
                 .addComponent(lblmax)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                .addGap(7, 7, 7)
+                .addComponent(lblFecha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
@@ -238,6 +245,10 @@ public class Pedidos extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void setFechaActual(){
+        Date fecha = new Date();
+        this.lblFecha.setText(fecha.toString()+" (dd/mm/aa)");
+    }
     /**
      * @param args the command line arguments
      */
@@ -286,8 +297,9 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblmax;
+    private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtcantidad;
     // End of variables declaration//GEN-END:variables
 }

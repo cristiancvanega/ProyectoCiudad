@@ -6,7 +6,6 @@
 package Hilos;
 
 import Grafo.Nodo;
-import java.awt.Point;
 import java.util.LinkedList;
 
 /**
@@ -20,9 +19,13 @@ public class Vehiculo implements Runnable {
     Grafo.Nodo[] movimiento;// Arreglo de nodos que contiene la ruta a seguir.
     javax.swing.JTextArea txtSalida;
     LinkedList<Integer> listEstVehiculos;
+    int tiempo;
+    Grafo.Grafo grafo;
+    boolean camion;
 
     public Vehiculo(javax.swing.JLabel carro, Nodo[] movimiento,
-            javax.swing.JTextArea txtSalida, LinkedList<Integer> listEstVehiculos) {
+            javax.swing.JTextArea txtSalida, LinkedList<Integer> listEstVehiculos,
+            Grafo.Grafo grafo, boolean camion) {
         this.carro = carro;
 //        this.grafo = grafo;
         this.movimiento = movimiento;
@@ -30,6 +33,9 @@ public class Vehiculo implements Runnable {
         this.carro.setLocation(movimiento[0].getX() + 80, movimiento[0].getY());
         this.txtSalida = txtSalida;
         this.listEstVehiculos = listEstVehiculos;
+        this.tiempo = 0;
+        this.grafo = grafo;
+        this.camion = camion;
     }
 
     private int valABS(int x, int y) {
@@ -47,6 +53,7 @@ public class Vehiculo implements Runnable {
         if (this.movimiento[i] == null) {
             return 5;
         }
+        this.tiempo += this.grafo.getMatrizAD()[this.movimiento[i - 1].getId()][this.movimiento[i].getId()].getPeso();
         int res = 0;
         if (valABS(this.movimiento[i].getX(), this.movimiento[i - 1].getX()) < 32) {
             if (this.movimiento[i].getY() > this.movimiento[i - 1].getY()) {
@@ -105,7 +112,36 @@ public class Vehiculo implements Runnable {
                         return;
                     }
                 }
-                System.out.println("x: " + this.carro.getX() + " y: " + this.carro.getY());
+                if (this.grafo.getMatrizAD()[this.movimiento[i].getId()][this.movimiento[i + 1].getId()] == null
+                        || 
+                        this.grafo.getMatrizAD()[this.movimiento[i].getId()][this.movimiento[i + 1].getId()] != null &&
+                        this.grafo.getMatrizAD()[this.movimiento[i].getId()][this.movimiento[i + 1].getId()].isObstruida()) {
+                    System.out.println("entró a la condicion");
+                    if (this.camion) {
+                        LinkedList<Integer> ruta = new LinkedList<>();
+                        this.grafo.getIntRutaCamion(this.movimiento[i].getId(),
+                                this.movimiento[this.movimiento.length - 1].getId(), ruta);
+                        if (!ruta.isEmpty()) {
+                            ruta.addFirst(this.movimiento[i].getId());
+                            this.movimiento = new Nodo[ruta.size()];
+                            for (int j = 0; j < ruta.size(); j++) {
+                                this.movimiento[j] = this.grafo.getListNodos()[ruta.get(j)];
+                            }
+                        }
+                    } else {
+                        LinkedList<Integer> ruta = new LinkedList<>();
+                        this.grafo.getIntRuta(this.movimiento[i].getId(),
+                                this.movimiento[this.movimiento.length - 1].getId(), ruta);
+                        if (!ruta.isEmpty()) {
+                            ruta.addFirst(this.movimiento[i].getId());
+                            this.movimiento = new Nodo[ruta.size()];
+                            for (int j = 0; j < ruta.size(); j++) {
+                                this.movimiento[j] = this.grafo.getListNodos()[ruta.get(j)];
+                            }
+                        }
+                    }
+                    i = 0;
+                }
                 Thread.sleep(100);
                 i++;
             } catch (Exception e) {

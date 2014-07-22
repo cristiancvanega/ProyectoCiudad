@@ -97,6 +97,7 @@ public class Arista {
     }
 
     public double getPeso() {
+        this.peso = this.distancia/this.velocidad;
         return peso;
     }
 
