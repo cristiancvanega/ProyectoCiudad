@@ -1,6 +1,7 @@
 package Vista;
 
 import Grafo.Arista;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -50,6 +51,10 @@ public class Panel extends JPanel {
             for (Arista[] aristas : this.grafo.getMatrizAD()) {
                 for (Arista arista : aristas) {
                     if (arista != null) {
+                        if(!arista.isTipo())
+                            g.setColor(Color.red);
+                        else
+                            g.setColor(Color.black);
                         g.drawLine(arista.getPosXO(), arista.getPosYO(), arista.getPosXD(), arista.getPosYD());
                         if (!arista.isObstruida()) {
                             g.fillOval(arista.getPosXD(), arista.getPosYD(), 7, 7);

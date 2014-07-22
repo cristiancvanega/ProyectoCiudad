@@ -29,8 +29,10 @@ public class Grafo {
     Nodo[][] matrizNodos;
     int tamano;
     int[][] ruta;
+    int rutaCamion[][];
 //    int[][] matrAdy;
     double[][] mCostos;
+    double [][] mCostosCamion;
 
     public Grafo(int tamano) {
         this.tamano = tamano;
@@ -71,7 +73,9 @@ public class Grafo {
         this.matrizAD = con.getMatrArista(this.tamano);
         this.listNodos = con.getListNodos();
         this.mCostos = new double[this.tamano][this.tamano];
+        this.mCostosCamion = new double[this.tamano][this.tamano];
         this.ruta = new int[this.tamano][this.tamano];
+        this.rutaCamion = new int[this.tamano][this.tamano];
         this.cargaPosAristas();
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
@@ -90,7 +94,25 @@ public class Grafo {
                 }
             }
         }
+        for (int i = 0; i < this.tamano; i++) {
+            for (int j = 0; j < this.tamano; j++) {
+                if (i == j) {
+                    this.rutaCamion[i][j] = 0;
+                    this.mCostosCamion[i][j] = 0;
+                } else {
+                    if (this.matrizAD[i][j] != null && this.matrizAD[i][j].isTipo()) {
+                        this.mCostosCamion[i][j] = this.matrizAD[i][j].getPeso();
+                        this.rutaCamion[i][j] = j;
+//                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+                    } else {
+                        this.mCostosCamion[i][j] = 1000000;
+                        this.rutaCamion[i][j] = -1;
+                    }
+                }
+            }
+        }
         this.floydwarshall();
+        this.floydwarshallCamion();
     }
 
     public Nodo[] getNodosRuta(int origen, int destino) {
@@ -99,21 +121,11 @@ public class Grafo {
     }
 
     public void getIntRuta(int origen, int destino, LinkedList<Integer> ruta) {
-//        if (this.ruta[origen][destino] == -1) {
         if (origen == destino) {
             return;
         }
-//        System.out.println("origen: " + origen + ", destino: " + destino);
         ruta.add(this.ruta[origen][destino]);
         getIntRuta(this.ruta[origen][destino], destino, ruta);
-//        double[][] costos = this.floydwarshall();
-//        for (int i = 0; i < this.tamano; i++) {
-////            System.out.println("index: " + i);
-//            for (int j = 0; j < this.tamano; j++) {
-//                System.out.print("," + this.ruta[i][j]);
-//            }
-//            System.out.println("");
-//        }
     }
 
     public double[][] floydwarshall() {
@@ -123,10 +135,35 @@ public class Grafo {
         for (int k = 0; k < this.tamano; k++) {
             for (int i = 0; i < this.tamano; i++) {
                 for (int j = 0; j < this.tamano; j++) {
-//                    double calc = cMA[i][k] + cMA[k][j];
                     if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
                         cMA[i][j] = cMA[i][k] + cMA[k][j];
                         ruta[i][j] = ruta[i][k];
+                    }
+                }
+            }
+        }
+        return cMA;
+    }
+    
+    public void getIntRutaCamion(int origen, int destino, LinkedList<Integer> ruta) {
+        if (origen == destino) {
+            return;
+        }
+        ruta.add(this.rutaCamion[origen][destino]);
+        getIntRutaCamion(this.rutaCamion[origen][destino], destino, ruta);
+    }
+    
+    public double[][] floydwarshallCamion() {
+        int n = this.tamano;
+        double[][] cMA = new double[this.tamano][this.tamano];
+        copiarMA(cMA, mCostosCamion);//realizamos una copia de la matriz de adyacencia
+        for (int k = 0; k < this.tamano; k++) {
+            for (int i = 0; i < this.tamano; i++) {
+                for (int j = 0; j < this.tamano; j++) {
+//                    double calc = cMA[i][k] + cMA[k][j];
+                    if (cMA[i][k] + cMA[k][j] < cMA[i][j]) {
+                        cMA[i][j] = cMA[i][k] + cMA[k][j];
+                        rutaCamion[i][j] = rutaCamion[i][k];
                     }
                 }
             }
@@ -322,25 +359,47 @@ public class Grafo {
         return res;
     }
 
+    public void eventoAristaCamion() {
+        for (int i = 0; i < this.tamano; i++) {
+            for (int j = 0; j < this.tamano; j++) {
+                if (i == j) {
+                    this.ruta[i][j] = 0;
+                    this.mCostos[i][j] = 0;
+                } else {
+                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
+                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
+                        this.ruta[i][j] = j;
+//                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+                    } else {
+                        this.mCostos[i][j] = 1000000;
+                        this.ruta[i][j] = -1;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < this.tamano; i++) {
+            for (int j = 0; j < this.tamano; j++) {
+                if (i == j) {
+                    this.rutaCamion[i][j] = 0;
+                    this.mCostosCamion[i][j] = 0;
+                } else {
+                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()
+                            && this.matrizAD[i][j].isTipo()) {
+                        this.mCostosCamion[i][j] = this.matrizAD[i][j].getPeso();
+                        this.rutaCamion[i][j] = j;
+//                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
+                    } else {
+                        this.mCostosCamion[i][j] = 1000000;
+                        this.rutaCamion[i][j] = -1;
+                    }
+                }
+            }
+        }
+        this.floydwarshall();
+        this.floydwarshallCamion();
+    }
+    
     public void eventoArista() {
-//        for (int i = 0; i < this.tamano; i++) {
-//            for (int j = 0; j < this.tamano; j++) {
-//                if (i == j) {
-//                    this.ruta[i][j] = 0;
-//                    this.mCostos[i][j] = 0;
-//                } else {
-//                    if (this.matrizAD[i][j] != null && !this.matrizAD[i][j].isObstruida()) {
-//                        this.mCostos[i][j] = this.matrizAD[i][j].getPeso();
-////                        System.out.println("i: " + i + ", j: " + j + ", peso: " + this.matrizAD[i][j].getPeso());
-//                    } else {
-//                        this.mCostos[i][j] = 1000000;
-//                    }
-//                    this.ruta[i][j] = -1;
-//                }
-//            }
-//        }
-//        this.floydwarshall();
-
         for (int i = 0; i < this.tamano; i++) {
             for (int j = 0; j < this.tamano; j++) {
                 if (i == j) {
@@ -359,6 +418,5 @@ public class Grafo {
             }
         }
         this.floydwarshall();
-
     }
 }

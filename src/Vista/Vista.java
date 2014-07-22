@@ -3,6 +3,8 @@ package Vista;
 import Grafo.Arista;
 import Grafo.Nodo;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Vista extends javax.swing.JFrame {
 
@@ -11,6 +13,15 @@ public class Vista extends javax.swing.JFrame {
     int tamano;
     LinkedList<Integer> listNoeditables;
     Pedidos pedido;
+
+    /*A continuación los datos que tiene listEstVehiculos:
+     int vehiculosAct;
+     int vehiculosInac;
+     int vehiculosSusp;
+     int vehiculosTotal;
+     int vehiculosTope;//Cantidad máxima de vehículos
+     */
+    LinkedList<Integer> listEstVehiculos;//
 
     public Vista() {
         initComponents();
@@ -26,12 +37,31 @@ public class Vista extends javax.swing.JFrame {
         chbxHabDesN = new javax.swing.JCheckBox();
         chbxCrearElimCD = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnPrutaPLabel = new javax.swing.JButton();
+        btnPRParametros = new javax.swing.JButton();
         txtRuta = new javax.swing.JTextField();
         chbxHabDesA = new javax.swing.JCheckBox();
         chbxRPedido = new javax.swing.JCheckBox();
         chbxIArista = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtSalida = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        btnAddCarro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("La Ciudad Del 5");
@@ -54,7 +84,7 @@ public class Vista extends javax.swing.JFrame {
         );
         panelFondoLayout.setVerticalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 612, Short.MAX_VALUE)
         );
 
         chbxHabDesN.setText("Hab/Des Nodos");
@@ -73,17 +103,17 @@ public class Vista extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/carro.jpg"))); // NOI18N
 
-        jButton1.setText("Prueba ruta");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnPrutaPLabel.setText("Prueba ruta");
+        btnPrutaPLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnPrutaPLabelActionPerformed(evt);
             }
         });
 
-        jButton2.setText("P referencia");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnPRParametros.setText("P referencia");
+        btnPRParametros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnPRParametrosActionPerformed(evt);
             }
         });
 
@@ -108,6 +138,17 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        txtSalida.setColumns(20);
+        txtSalida.setRows(5);
+        jScrollPane1.setViewportView(txtSalida);
+
+        btnAddCarro.setText("Add carro");
+        btnAddCarro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCarroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,15 +157,51 @@ public class Vista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chbxHabDesN)
                     .addComponent(chbxCrearElimCD)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(btnPrutaPLabel)
+                    .addComponent(btnPRParametros)
                     .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chbxHabDesA)
                     .addComponent(chbxRPedido)
-                    .addComponent(chbxIArista))
+                    .addComponent(chbxIArista)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8))
+                            .addComponent(jLabel15))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel9)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel17)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAddCarro)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
                 .addContainerGap())
@@ -147,13 +224,50 @@ public class Vista extends javax.swing.JFrame {
                         .addComponent(chbxRPedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chbxIArista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddCarro)
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
                         .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39)
-                        .addComponent(jButton2)
+                        .addComponent(btnPRParametros)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addGap(44, 44, 44)
+                        .addComponent(btnPrutaPLabel)
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel5)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel4))
+                                                .addComponent(jLabel6)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel14)
+                                                .addComponent(jLabel7))
+                                            .addGap(6, 6, 6)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel9)
+                                        .addComponent(jLabel8)
+                                        .addComponent(jLabel12)
+                                        .addComponent(jLabel15))))
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel13)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel17)
+                                .addComponent(jLabel16)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addGap(20, 20, 20))))
         );
@@ -178,30 +292,32 @@ public class Vista extends javax.swing.JFrame {
                 }
                 indice++;
             }
-        }else if (this.chbxCrearElimCD.isSelected()) {
+        } else if (this.chbxCrearElimCD.isSelected()) {
             while (bandera && indice < this.tamano) {
                 if (this.grafo.getListNodos()[indice] != null) {
                     if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
                         if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())) {
-                        if (this.grafo.getListNodos()[indice].getHuesped() == null) {
-                            this.grafo.getListNodos()[indice].creaCDistr();
-                        } else {
-                            this.grafo.getListNodos()[indice].setHuesped(null);
+                            if (this.grafo.getListNodos()[indice].getHuesped() == null) {
+                                this.grafo.getListNodos()[indice].creaCDistr();
+                            } else {
+                                this.grafo.getListNodos()[indice].setHuesped(null);
+                            }
                         }
-                    }
                         bandera = false;
                     }
                 }
                 indice++;
             }
-        }else if (this.chbxHabDesA.isSelected()) {
+        } else if (this.chbxHabDesA.isSelected()) {
             Grafo.Arista[][] arista = this.grafo.getMatrizAD();
             for (int i = 0; i < this.tamano; i++) {
-                if(!bandera)
-                        break;
+                if (!bandera) {
+                    break;
+                }
                 for (int j = 0; j < this.tamano; j++) {
-                    if(!bandera)
+                    if (!bandera) {
                         break;
+                    }
                     if (arista[i][j] != null) {
                         if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
                             if (arista[i][j].isObstruida()) {
@@ -210,7 +326,11 @@ public class Vista extends javax.swing.JFrame {
                                 arista[i][j].setObstruida(true);
                             }
                             System.out.println("arista encontrada... i: " + i + ", j: " + j);
-                            this.grafo.eventoArista();
+                            if(arista[i][j].isTipo()){
+                                this.grafo.eventoAristaCamion();
+                            }else{
+                                this.grafo.eventoArista();
+                            }
                             bandera = false;
                         }
                     }
@@ -237,38 +357,40 @@ public class Vista extends javax.swing.JFrame {
 //                indice++;
 //            }
 //            System.out.println("Hab/des arista");
-        }else if(this.chbxIArista.isSelected()){
+        } else if (this.chbxIArista.isSelected()) {
             Grafo.Arista[][] arista = this.grafo.getMatrizAD();
             for (int i = 0; i < this.tamano; i++) {
-                if(!bandera)
-                        break;
+                if (!bandera) {
+                    break;
+                }
                 for (int j = 0; j < this.tamano; j++) {
-                    if(!bandera)
+                    if (!bandera) {
                         break;
+                    }
                     if (arista[i][j] != null) {
                         if (arista[i][j].getArea().contains(evt.getX(), evt.getY())) {
-                            if(arista[j][i] == null){
-                                    arista[j][i] = new Arista(arista[i][j].getDistancia(), 
-                                            arista[i][j].getVelocidad(), arista[i][j].getPeso(), 
-                                            true, 110);
-                                }else{
-                                    arista[j][i].setCarriles(arista[i][j].getCarriles()+1);
-                                }
-                            if(arista[i][j].getCarriles() > 1){
-                                arista[i][j].setCarriles(arista[i][j].getCarriles()-1);
-                            }else{
+                            if (arista[j][i] == null) {
+                                arista[j][i] = new Arista(arista[i][j].getDistancia(),
+                                        arista[i][j].getVelocidad(), arista[i][j].getPeso(),
+                                        arista[i][j].isTipo(), 300);
+                            } else {
+                                arista[j][i].setCarriles(arista[i][j].getCarriles() + 1);
+                            }
+                            if (arista[i][j].getCarriles() > 1) {
+                                arista[i][j].setCarriles(arista[i][j].getCarriles() - 1);
+                            } else {
                                 arista[i][j] = null;
                             }
                             System.out.println("arista encontrada... i: " + i + ", j: " + j);
-                            this.grafo.eventoArista();
+                            this.grafo.eventoAristaCamion();
                             this.grafo.cargaPosUnaArista(j, i);
                             bandera = false;
                         }
                     }
                 }
             }
-        }else if (this.chbxRPedido.isSelected()) {
-            while(bandera && indice < this.tamano){
+        } else if (this.chbxRPedido.isSelected()) {
+            while (bandera && indice < this.tamano) {
                 if (this.grafo.getListNodos()[indice] != null) {
                     if (this.grafo.getListNodos()[indice].getArea().contains(evt.getX(), evt.getY())
                             && !this.listNoeditables.contains(this.grafo.getListNodos()[indice].getId())
@@ -281,10 +403,10 @@ public class Vista extends javax.swing.JFrame {
             }
         }
         /*
-        *El siguiente bloque funciona pero el anterior optimiza tiempo de ejecución,
-        *pués usa while con una bandera para cortar la búsqueda en caso de encontrar
-        *el nodo
-        */
+         *El siguiente bloque funciona pero el anterior optimiza tiempo de ejecución,
+         *pués usa while con una bandera para cortar la búsqueda en caso de encontrar
+         *el nodo
+         */
 //        if (this.chbxHabDesN.isSelected()) {
 //            for (Grafo.Nodo nodo : this.grafo.getListNodos()) {
 //                if (nodo != null) {
@@ -359,32 +481,42 @@ public class Vista extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chbxCrearElimCDActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Grafo.Nodo[] ruta = new Nodo[16];
-        ruta[0] = this.grafo.getListNodos()[9];
-        ruta[1] = this.grafo.getListNodos()[10];
-        ruta[2] = this.grafo.getListNodos()[11];
-        ruta[3] = this.grafo.getListNodos()[12];
-        ruta[4] = this.grafo.getListNodos()[23];
-        ruta[5] = this.grafo.getListNodos()[22];
-        ruta[6] = this.grafo.getListNodos()[21];
-        ruta[7] = this.grafo.getListNodos()[32];
-        ruta[8] = this.grafo.getListNodos()[33];
-        ruta[9] = this.grafo.getListNodos()[22];
-        ruta[10] = this.grafo.getListNodos()[11];
-//        ruta[11] = null;
-        ruta[11] = this.grafo.getListNodos()[10];
-        ruta[12] = this.grafo.getListNodos()[9];
-        ruta[13] = this.grafo.getListNodos()[1];
-        ruta[14] = this.grafo.getListNodos()[2];
-        ruta[15] = this.grafo.getListNodos()[4];
-        Thread hilo = new Thread(new Hilos.Vehiculo(this.jLabel1, ruta));
-        hilo.start();
-        System.out.println("Terminó el hilo vista");
+    private void btnPrutaPLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrutaPLabelActionPerformed
+        int origen = Integer.parseInt(this.txtRuta.getText().split(",")[0]);
+        int destino = Integer.parseInt(this.txtRuta.getText().split(",")[1]);
+        this.jLabel2.setIcon(new ImageIcon(getClass().getResource("../Recursos/furgon.jpg")));
+//lbl.setIcon(new java.net.Url("imagenes/icono.png);
+        LinkedList<Integer> ruta = new LinkedList<>();
+//        int origen = 1;
+//        int destino = 25;
+        this.grafo.getIntRutaCamion(origen, destino, ruta);
+        if (!ruta.isEmpty()) {
+            ruta.addFirst(origen);
+//            ruta.add(destino);
+        }
+        Grafo.Nodo[] trav = new Nodo[ruta.size()];
+        for (int i = 0; i < ruta.size(); i++) {
+            trav[i] = this.grafo.getListNodos()[ruta.get(i)];
+        }
+        System.out.println("Tam ruta: " + ruta.size());
+        for (Integer n : ruta) {
+            System.out.print(", " + n);
+        }
+        System.out.println("");
+        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
+            System.out.println("antes de...");
+            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+            this.setVehicTxtSalida();
+            Thread hilo = new Thread(new Hilos.Vehiculo(jLabel2, trav,
+                    this.txtSalida, this.listEstVehiculos));
+            hilo.start();
+        }
+        System.out.println("despues de...");
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnPrutaPLabelActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnPRParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPRParametrosActionPerformed
         int origen = Integer.parseInt(this.txtRuta.getText().split(",")[0]);
         int destino = Integer.parseInt(this.txtRuta.getText().split(",")[1]);
         LinkedList<Integer> ruta = new LinkedList<>();
@@ -404,11 +536,16 @@ public class Vista extends javax.swing.JFrame {
             System.out.print(", " + n);
         }
         System.out.println("");
-        if (!ruta.isEmpty()) {
-            Thread hilo = new Thread(new Hilos.Vehiculo(this.jLabel1, trav));
+        if (!ruta.isEmpty() && this.listEstVehiculos.get(1) > 0) {
+            System.out.println("antes de...");
+            this.listEstVehiculos.add(0, this.listEstVehiculos.remove(0) + 1);
+            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) - 1);
+            this.setVehicTxtSalida();
+            Thread hilo = new Thread(new Hilos.Vehiculo(jLabel1, trav,
+                    this.txtSalida, this.listEstVehiculos));
             hilo.start();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnPRParametrosActionPerformed
 
     private void chbxHabDesAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxHabDesAActionPerformed
         if (this.chbxHabDesA.isSelected()) {
@@ -429,13 +566,22 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_chbxRPedidoActionPerformed
 
     private void chbxIAristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxIAristaActionPerformed
-        if(this.chbxIArista.isSelected()){
+        if (this.chbxIArista.isSelected()) {
             this.chbxRPedido.setSelected(false);
             this.chbxHabDesN.setSelected(false);
             this.chbxCrearElimCD.setSelected(false);
             this.chbxHabDesA.setSelected(false);
         }
     }//GEN-LAST:event_chbxIAristaActionPerformed
+
+    private void btnAddCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCarroActionPerformed
+        if (this.listEstVehiculos.get(3) <= this.listEstVehiculos.get(4)) {
+            this.listEstVehiculos.add(3, this.listEstVehiculos.remove(3) + 1);
+            this.listEstVehiculos.add(1, this.listEstVehiculos.remove(1) + 1);
+            JOptionPane.showMessageDialog(null, "La adición de un carro se cargará a la cuenta");
+            this.setVehicTxtSalida();
+        }
+    }//GEN-LAST:event_btnAddCarroActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -449,16 +595,35 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddCarro;
+    private javax.swing.JButton btnPRParametros;
+    private javax.swing.JButton btnPrutaPLabel;
     private javax.swing.JCheckBox chbxCrearElimCD;
     private javax.swing.JCheckBox chbxHabDesA;
     private javax.swing.JCheckBox chbxHabDesN;
     private javax.swing.JCheckBox chbxIArista;
     private javax.swing.JCheckBox chbxRPedido;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JPanel panelFondo;
     private javax.swing.JTextField txtRuta;
+    private javax.swing.JTextArea txtSalida;
     // End of variables declaration//GEN-END:variables
 
     private void cargar() {
@@ -468,7 +633,15 @@ public class Vista extends javax.swing.JFrame {
         ((Panel) panelFondo).setGrafo(this.grafo);
         this.llenaNoEditables();
         this.pedido = new Pedidos();
-        this.chbxIArista.setVisible(false);
+        this.listEstVehiculos = new LinkedList<Integer>();
+        this.listEstVehiculos.add(0);
+        this.listEstVehiculos.add(10);
+        this.listEstVehiculos.add(0);
+        this.listEstVehiculos.add(10);
+        this.listEstVehiculos.add(19);
+        this.setVehicTxtSalida();
+
+//        this.chbxIArista.setVisible(false);
     }
 
     private void llenaNoEditables() {
@@ -479,4 +652,12 @@ public class Vista extends javax.swing.JFrame {
 
     }
 
+    //Muestra vehículos an txtSalida
+    private void setVehicTxtSalida() {
+        this.txtSalida.setText("Act: " + this.listEstVehiculos.get(0) + "\n");
+        this.txtSalida.append("Inac: " + this.listEstVehiculos.get(1) + "\n");
+        this.txtSalida.append("Susp: " + this.listEstVehiculos.get(2) + "\n");
+        this.txtSalida.append("Total: " + this.listEstVehiculos.get(3) + "\n");
+        this.txtSalida.append("Tope: " + this.listEstVehiculos.get(4) + "\n");
+    }
 }
